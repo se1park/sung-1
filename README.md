@@ -1,6 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # sung-won
 =======
+=======
+>>>>>>> a8c81e613e0d97165f19c173af82376b397f2714
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -71,4 +74,10 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<<<<<<< HEAD
 >>>>>>> d1d7659 (Initialize project using Create React App)
+=======
+=======
+# sung-won
+>>>>>>> f0a6c4e060514a1fabbee38caa7bbc1872a58831
+>>>>>>> a8c81e613e0d97165f19c173af82376b397f2714

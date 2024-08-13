@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .App {
   text-align: center;
 }
@@ -35,4 +36,155 @@
   to {
     transform: rotate(360deg);
   }
+=======
+/* 전체적인 페이지 기본 스타일 설정 */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #E0E0E0;
+}
+
+/* 헤더 스타일 - 중앙 정렬 및 배경 색상 설정 */
+.header {
+  background-color: #D0D0D0;
+  padding: 10px;
+  text-align: center; /* 텍스트 가운데 정렬 */
+  display: flex;
+  justify-content: center; /* 플렉스 아이템을 가운데 정렬 */
+}
+
+/* 헤더 내부 요소들의 기본 마진 설정 */
+.header div {
+  margin: 0 10px;
+}
+
+/* 로고 위치 설정 - 화면의 왼쪽 상단에 배치 */
+.logo {
+  position: absolute; /* 절대 위치 설정 */
+  top: 0px; /* 위에서 10px 떨어지도록 설정 */
+  left: 0px; /* 왼쪽에서 10px 떨어지도록 설정 */
+}
+
+/* 로고 크기 및 위치 설정 */
+.logo img {
+  width: 110px;  /* 로고의 너비 설정 */
+  height: 110px; /* 로고의 높이 설정 */
+  object-fit: contain; /* 로고가 박스에 맞게 조절되도록 설정 */
+}
+
+
+/* 컨테이너 스타일 - 메인 레이아웃을 플렉스 박스로 설정 */
+.container {
+  display: flex;
+  margin-top: 100px; /* 로고와 헤더가 겹치지 않도록 여백 추가 */
+}
+
+/* 사이드바 스타일 - 왼쪽에 고정된 너비와 배경색 설정 */
+.sidebar {
+  width: 150px;
+  background-color: #D0D0D0;
+  padding: 10px;
+}
+
+/* 사이드바 링크 스타일 - 링크 요소들을 블록 요소로 변환하여 세로 정렬 */
+.sidebar a {
+  display: block;
+  color: black;
+  text-decoration: none;
+  padding: 10px 0; /* 각 링크 간의 패딩 설정 */
+}
+
+/* 메인 콘텐츠 영역 스타일 - 플렉스 박스의 남은 공간을 채우도록 설정 */
+.content {
+  flex-grow: 1;
+  padding: 10px;
+  background-color: #F0F0F0;
+}
+
+/* 콘텐츠 박스 스타일 - 배경 색상, 크기, 텍스트 정렬 설정 */
+.box {
+  background-color: #E0E0F8;
+  width: 100%;
+  height: 150px;
+  margin-bottom: 20px;
+  text-align: center;
+  line-height: 150px; /* 텍스트를 가운데로 정렬 */
+  color: #444;
+}
+
+/* 로그인 버튼 스타일 - 오른쪽 상단에 위치 설정 */
+.black-box {
+  background-color: black;
+  color: white;
+  width: 100px;
+  height: 50px;
+  line-height: 50px; /* 텍스트 수직 가운데 정렬 */
+  text-align: center;
+  position: absolute; /* 절대 위치 설정 */
+  right: 30px; /* 오른쪽에서 10px 떨어지도록 설정 */
+  top: 30px; /* 위에서 10px 떨어지도록 설정 */
+}
+
+/* 검색 입력 필드의 래퍼 스타일 - 전체 크기 설정 및 중앙 정렬 */
+.wrap-input-18 { 
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+}
+
+/* 검색 필드 스타일 */
+.wrap-input-18 .search {
+  margin: 20px;
+}
+
+/* 검색 필드의 입력 래퍼 스타일 */
+.wrap-input-18 .search > div {
+  display: inline-block;
+  position: relative; /* 자식 요소의 위치를 조정하기 위해 상대 위치 설정 */
+}
+
+/* 검색 아이콘 스타일 - 검색 필드 끝에 삽입되는 아이콘 */
+.wrap-input-18 .search > div:after {
+  content: ""; /* 빈 내용으로 의도된 스타일만 표시 */
+  background: white;
+  width: 4px;
+  height: 20px;
+  position: absolute;
+  top: 40px;
+  right: 2px;
+  transform: rotate(135deg); /* 135도 회전하여 돋보기 모양 구현 */
+}
+
+/* 검색 입력 필드 스타일 */
+.wrap-input-18 .search > div > input {
+  color: white;
+  font-size: 16px;
+  background: transparent;
+  width: 25px;
+  height: 25px;
+  padding: 10px;
+  border: solid 3px white;
+  outline: none;
+  border-radius: 35px;
+  transition: width 0.5s; /* 입력 필드 확장 애니메이션 */
+}
+
+/* 검색 필드 플레이스홀더 스타일 */
+.wrap-input-18 .search > div > input::placeholder {
+  color: #efefef;
+  opacity: 0; /* 기본 상태에서 투명도 0 */
+  transition: opacity 150ms ease-out; /* 플레이스홀더의 투명도 전환 */
+}
+
+/* 검색 필드에 마우스를 올릴 때 플레이스홀더가 보이도록 설정 */
+.wrap-input-18 .search > div > input:hover::placeholder {
+  opacity: 1; /* 투명도 1로 설정하여 플레이스홀더 표시 */
+}
+
+/* 검색 필드에 마우스를 올릴 때 입력 필드가 확장되도록 설정 */
+.wrap-input-18 .search > div:hover > input {
+  width: 250px; /* 호버 시 입력 필드의 너비 확장 */
+>>>>>>> a8c81e613e0d97165f19c173af82376b397f2714
 }
