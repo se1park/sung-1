@@ -1,0 +1,156 @@
+/* 페이지의 전체 높이와 너비를 설정 */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+/* 로그인 폼의 중앙 정렬을 위쪽으로 변경 */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* 수직 정렬을 상단으로 설정 */
+    align-items: center; /* 수평 중앙 정렬 */
+    height: 100vh; /* 화면 전체 높이 */
+    padding-top: 50px; /* 상단에 여백 추가 */
+}
+
+/* 폼 내부 스타일 */
+.login-form form {
+    background-color: #f7f7f7; /* 폼의 배경색 */
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px; /* 폼의 너비 */
+}
+
+/* 입력 필드 스타일 */
+.input-group, .input-group1 {
+    margin-bottom: 15px;
+}
+
+.input-group label, .input-group1 label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input, .input-group1 input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* 로그인 버튼 스타일 */
+.input-group button, .input-group1 button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 로그인 버튼 스타일 */
+.login-btn {
+    margin-top: 20px;
+    width: 100%; /* 아이디 입력 칸과 동일한 너비 */
+    padding: 10px; /* 입력 칸과 동일한 패딩 */
+    font-size: 16px; /* 텍스트 크기 설정 */
+    color: white; /* 텍스트 색상 */
+    background-color: #333; /* 버튼 배경색 */
+    border: none; /* 기본 테두리 제거 */
+    border-radius: 5px; /* 입력 칸과 동일한 모서리 둥글기 */
+    cursor: pointer; /* 커서 모양을 포인터로 변경 */
+}
+
+/* 로그인 버튼 호버 효과 */
+.login-btn:hover {
+    background-color: #555; /* 호버 시 배경색 변경 */
+}
+
+/* 체크박스 스타일 */
+.wrap-check-50 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    margin-right: 200px; /* 왼쪽으로 20px 이동 */
+}
+
+.wrap-check-50 input[type="checkbox"] {
+    display: none;
+    visibility: hidden;
+}
+
+.wrap-check-50 label {
+    display: inline-block;
+}
+
+.wrap-check-50 .check {
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+    width: 18px;
+    height: 18px;
+    -webkit-tap-highlight-color: transparent;
+    transform: translate3d(0, 0, 0);
+}
+
+.wrap-check-50 .check:before {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(34, 50, 84, 0.03);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.wrap-check-50 .check svg {
+    position: relative;
+    z-index: 1;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: #c8ccd4;
+    stroke-width: 1.5;
+    transform: translate3d(0, 0, 0);
+    transition: all 0.2s ease;
+}
+
+.wrap-check-50 .check svg path {
+    stroke-dasharray: 60;
+    stroke-dashoffset: 0;
+}
+
+.wrap-check-50 .check svg polyline {
+    stroke-dasharray: 22;
+    stroke-dashoffset: 66;
+}
+
+.wrap-check-50 .check:hover:before {
+    opacity: 1;
+}
+
+.wrap-check-50 .check:hover svg {
+    stroke: #4285f4;
+}
+
+.wrap-check-50 input[type="checkbox"]:checked + .check svg {
+    stroke: #4285f4;
+}
+
+.wrap-check-50 input[type="checkbox"]:checked + .check svg path {
+    stroke-dashoffset: 60;
+    transition: all 0.3s linear;
+}
+
+.wrap-check-50 input[type="checkbox"]:checked + .check svg polyline {
+    stroke-dashoffset: 42;
+    transition: all 0.2s linear;
+    transition-delay: 0.15s;
+}
