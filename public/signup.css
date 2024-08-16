@@ -1,0 +1,51 @@
+/* 페이지의 전체 높이와 너비를 설정 */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* 수직 정렬을 상단으로 설정 */
+    align-items: center; /* 수평 중앙 정렬 */
+    height: 100vh; /* 화면 전체 높이 */
+    padding-top: 50px; /* 상단에 여백 추가 */
+}
+
+.signup-form form {
+    background-color: #f7f7f7; /* 폼의 배경색 */
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px; /* 폼의 너비 */
+}
+
+
+/* 입력 필드 스타일 */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* 로그인 버튼 스타일 */
+.input-group button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

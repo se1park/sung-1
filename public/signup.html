@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN</title>
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+
+    <div class="header">
+        <div>
+            <div class="wrap-input-18">
+                <div class="search">
+                    <div>
+                        <input type="text" placeholder="Search . . .">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="logo">
+        <a href="index.html">
+            <img src="team_logo.png" alt="logo">
+        </a>
+    </div>
+
+    <div class="container">
+        <!-- 로그인 버튼 -->
+        <button class="btn-20" onclick="window.location.href='login.html';">
+            <span>로그인</span>
+        </button>
+        <!-- 회원가입 버튼 -->
+        <button class="btn-21" onclick="window.location.href='signup.html';">
+            <span>회원가입</span>
+        </button>
+    </div>
+
+    <!-- 로그인 폼 -->
+    <div class="signup-form">
+        <div class="input-group">
+            <label for="username"></label>
+            <input type="text" id="username" name="username" placeholder="E-MAIL" required>
+        </div>
+        <div class="input-group">
+            <label for="password"></label>
+            <input type="password" id="password" name="password" placeholder="PW" required>
+        </div>
+        <div class="input-group">
+            <label for="nickname"></label>
+            <input type="naickname" id="nickname" name="nickname" placeholder="NICKNAME" required>
+        </div> 
+        <div class="input-group">
+            <label for="phonenumber"></label>
+            <input type="phonenumber" id="phonenumber" name="phonenumber" placeholder="PHONENUMBER" required>
+        </div>
+        <div class="input-group">
+            <button type="submit" class="login-btn">회원가입</button>
+        </div>
+        
+    </div>
+
+</body>
+</html>

@@ -24,16 +24,16 @@ body, html {
 }
 
 /* 입력 필드 스타일 */
-.input-group, .input-group1 {
+.input-group {
     margin-bottom: 15px;
 }
 
-.input-group label, .input-group1 label {
+.input-group label {
     display: block;
     margin-bottom: 5px;
 }
 
-.input-group input, .input-group1 input {
+.input-group input {
     width: 100%;
     padding: 10px;
     font-size: 16px;
@@ -42,7 +42,7 @@ body, html {
 }
 
 /* 로그인 버튼 스타일 */
-.input-group button, .input-group1 button {
+.input-group button {
     width: 100%;
     padding: 10px;
     font-size: 16px;
