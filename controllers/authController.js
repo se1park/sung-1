@@ -11,7 +11,7 @@ exports.signup = async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { username, email, password } = req.body;
+    const { username, email, password, provider } = req.body;
 
     try {
         const existingUser = await User.findOne({ $or: [{ email }, { username }] });
@@ -22,7 +22,8 @@ exports.signup = async (req, res) => {
         const user = new User({
             username,
             email,
-            password // 비밀번호는 모델에서 자동으로 해시됩니다.
+            password, // 비밀번호는 모델에서 자동으로 해시됩니다.
+            provider
         });
 
         await user.save();

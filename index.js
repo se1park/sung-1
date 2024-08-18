@@ -1,10 +1,28 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const passport = require('passport'); 
 const path = require('path');
+const session = require('express-session'); 
+const cors = require('cors');  
+
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
+
+require('dotenv').config();
+require('./config/passport')(passport); // passport 설정 불러오기
+
+// 세션 설정 (필수)
+app.use(session({
+  secret: process.env.SESSION_SECRET,  // 세션 암호화 키
+  resave: false,
+  saveUninitialized: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());  // 세션에 passport 연결
 
 app.use(express.json());
+app.use(cors());
 
 const authRouter = require('./routes/auth');
 const profileRouter = require('./routes/profile');
@@ -13,7 +31,7 @@ const chickenBreastRouter = require('./router/ChickenBreastRouter');
 const recipeRouter = require('./router/recipeRouter');
 
 // MongoDB 연결
-mongoose.connect('mongodb+srv://tjdwns8083:12345@cluster0.yfjlzuv.mongodb.net/myDatabaseName?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://tjdwns8083:12345@cluster0.yfjlzuv.mongodb.net/ouruser?retryWrites=true&w=majority')
   .then(() => console.log('mongodb connected'))
   .catch(err => console.log('MongoDB connection error:', err));
 
@@ -25,8 +43,17 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
+// 대시보드 경로 추가
+app.get('/dashboard', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.send('<h1>Welcome to your dashboard</h1>');  // 로그인 성공 시 표시할 내용
+  } else {
+    res.redirect('/');  // 로그인되지 않은 경우 루트로 리다이렉트
+  }
+});
+
 // API 라우트 설정
-app.use('/api/auth', authRouter);
+app.use('/auth', authRouter); // auth 라우트 추가
 app.use('/api/profile', profileRouter);
 app.use('/api/users', userRouters);
 app.use('/api/chickenBreasts', chickenBreastRouter);
