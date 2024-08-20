@@ -28,8 +28,8 @@ body {
 
 /* 로고 크기 및 위치 설정 */
 .logo img {
-  width: 110px;  /* 로고의 너비 설정 */
-  height: 108px; /* 로고의 높이 설정 */
+  width: 125px;  /* 로고의 너비 설정 */
+  height: 123px; /* 로고의 높이 설정 */
   object-fit: contain; /* 로고가 박스에 맞게 조절되도록 설정 */
 }
 
@@ -73,18 +73,6 @@ body {
   color: #444;
 }
 
-/* 로그인 버튼 스타일 - 오른쪽 상단에 위치 설정 */
-.black-box {
-  background-color: black;
-  color: white;
-  width: 100px;
-  height: 50px;
-  line-height: 50px; /* 텍스트 수직 가운데 정렬 */
-  text-align: center;
-  position: absolute; /* 절대 위치 설정 */
-  right: 30px; /* 오른쪽에서 10px 떨어지도록 설정 */
-  top: 30px; /* 위에서 10px 떨어지도록 설정 */
-}
 
 /* 검색 입력 필드의 래퍼 스타일 - 전체 크기 설정 및 중앙 정렬 */
 .wrap-input-18 { 
@@ -98,6 +86,7 @@ body {
 /* 검색 필드 스타일 */
 .wrap-input-18 .search {
   margin: 20px;
+  margin-left: 150px;
 }
 
 /* 검색 필드의 입력 래퍼 스타일 */
@@ -147,156 +136,4 @@ body {
 /* 검색 필드에 마우스를 올릴 때 입력 필드가 확장되도록 설정 */
 .wrap-input-18 .search > div:hover > input {
   width: 250px; /* 호버 시 입력 필드의 너비 확장 */
-}
-
-.btn-20,
-.btn-20 *,
-.btn-20 :after,
-.btn-20 :before,
-.btn-20:after,
-.btn-20:before {
-  border: 0 solid;
-  box-sizing: border-box;
-}
-
-.btn-20 {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-appearance: button;
-  background-color: #000;
-  background-image: none;
-  color: #fff;
-  cursor: pointer;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-  font-size: 100%;
-  font-weight: 900;
-  margin: 0;
-  -webkit-mask-image: -webkit-radial-gradient(#000, #fff);
-  padding: 0;
-  text-transform: uppercase;
-  border-radius: 99rem;
-  border-width: 2px;
-  overflow: hidden;
-  padding: 0.8rem 3rem;
-  position: absolute; /* 절대 위치 설정 */
-  right: 30px; /* 오른쪽에서 30px 떨어지도록 설정 */
-  top: 30px; /* 위에서 30px 떨어지도록 설정 */
-  text-align: center; /* 텍스트 가운데 정렬 */
-  width: 180px; /* 버튼 너비 설정 */
-  height: 50px; /* 버튼 높이 설정 */
-}
-
-.btn-20 span {
-  mix-blend-mode: difference;
-}
-
-.btn-20:before {
-  background: #fff;
-  content: "";
-  display: block;
-  height: 100%;
-  left: -100%;
-  position: absolute;
-  top: 0;
-  transform: skew(0deg) translateX(-20%);
-  transition: transform 0.2s ease;
-  width: 120%;
-}
-
-.btn-20:hover:before {
-  transform: skew(45deg) translateX(75%);
-}
-
-.btn-20:disabled {
-  cursor: default;
-}
-
-.btn-20:-moz-focusring {
-  outline: auto;
-}
-
-.btn-20 svg {
-  display: block;
-  vertical-align: middle;
-}
-
-.btn-20 [hidden] {
-  display: none;
-}
-
-.btn-21,
-.btn-21 *,
-.btn-21 :after,
-.btn-21 :before,
-.btn-21:after,
-.btn-21:before {
-  border: 0 solid;
-  box-sizing: border-box;
-}
-
-.btn-21 {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-appearance: button;
-  background-color: #000;
-  background-image: none;
-  color: #fff;
-  cursor: pointer;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-  font-size: 100%;
-  font-weight: 900;
-  margin: 0;
-  -webkit-mask-image: -webkit-radial-gradient(#000, #fff);
-  padding: 0;
-  text-transform: uppercase;
-  border-radius: 99rem;
-  border-width: 2px;
-  overflow: hidden;
-  padding: 0.8rem 3rem;
-  position: absolute; /* 절대 위치 설정 */
-  right: 230px; /* .btn-20보다 왼쪽에 위치하도록 설정 (150px 버튼 너비 + 40px 간격) */
-  top: 30px; /* 위에서 30px 떨어지도록 설정 */
-  text-align: center; /* 텍스트 가운데 정렬 */
-  width: 180px; /* 버튼 너비 설정 */
-  height: 50px; /* 버튼 높이 설정 */
-}
-
-.btn-21 span {
-  mix-blend-mode: difference;
-}
-
-.btn-21:before {
-  background: #fff;
-  content: "";
-  display: block;
-  height: 100%;
-  left: -100%;
-  position: absolute;
-  top: 0;
-  transform: skew(0deg) translateX(-20%);
-  transition: transform 0.2s ease;
-  width: 120%;
-}
-
-.btn-21:hover:before {
-  transform: skew(45deg) translateX(75%);
-}
-
-.btn-21:disabled {
-  cursor: default;
-}
-
-.btn-21:-moz-focusring {
-  outline: auto;
-}
-
-.btn-21 svg {
-  display: block;
-  vertical-align: middle;
-}
-
-.btn-21 [hidden] {
-  display: none;
 }

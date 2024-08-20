@@ -1,8 +1,14 @@
+/* 페이지의 전체 높이와 너비를 설정 */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 /* 전체적인 페이지 기본 스타일 설정 */
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
-
+  background-color: #E0E0E0;
 }
 
 /* 헤더 스타일 - 중앙 정렬 및 배경 색상 설정 */
@@ -28,11 +34,10 @@ body {
 
 /* 로고 크기 및 위치 설정 */
 .logo img {
-  width: 110px;  /* 로고의 너비 설정 */
-  height: 108px; /* 로고의 높이 설정 */
+  width: 125px;  /* 로고의 너비 설정 */
+  height: 123px; /* 로고의 높이 설정 */
   object-fit: contain; /* 로고가 박스에 맞게 조절되도록 설정 */
 }
-
 
 /* 컨테이너 스타일 - 메인 레이아웃을 플렉스 박스로 설정 */
 .container {
@@ -73,7 +78,6 @@ body {
   color: #444;
 }
 
-
 /* 검색 입력 필드의 래퍼 스타일 - 전체 크기 설정 및 중앙 정렬 */
 .wrap-input-18 { 
   width: 100%;
@@ -86,6 +90,7 @@ body {
 /* 검색 필드 스타일 */
 .wrap-input-18 .search {
   margin: 20px;
+  margin-left: 150px;
 }
 
 /* 검색 필드의 입력 래퍼 스타일 */
@@ -137,154 +142,139 @@ body {
   width: 250px; /* 호버 시 입력 필드의 너비 확장 */
 }
 
-.btn-20,
-.btn-20 *,
-.btn-20 :after,
-.btn-20 :before,
-.btn-20:after,
-.btn-20:before {
-  border: 0 solid;
-  box-sizing: border-box;
+/* 체크박스 스타일 */
+.wrap-check-50 {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  margin-right: 115px; /* 왼쪽으로 20px 이동 */
 }
 
-.btn-20 {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-appearance: button;
-  background-color: #000;
-  background-image: none;
-  color: #fff;
-  cursor: pointer;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-  font-size: 100%;
-  font-weight: 900;
-  margin: 0;
-  -webkit-mask-image: -webkit-radial-gradient(#000, #fff);
-  padding: 0;
-  text-transform: uppercase;
-  border-radius: 99rem;
-  border-width: 2px;
-  overflow: hidden;
-  padding: 0.8rem 3rem;
-  position: absolute; /* 절대 위치 설정 */
-  right: 30px; /* 오른쪽에서 30px 떨어지도록 설정 */
-  top: 30px; /* 위에서 30px 떨어지도록 설정 */
-  text-align: center; /* 텍스트 가운데 정렬 */
-  width: 180px; /* 버튼 너비 설정 */
-  height: 50px; /* 버튼 높이 설정 */
-}
-
-.btn-20 span {
-  mix-blend-mode: difference;
-}
-
-.btn-20:before {
-  background: #fff;
-  content: "";
-  display: block;
-  height: 100%;
-  left: -100%;
-  position: absolute;
-  top: 0;
-  transform: skew(0deg) translateX(-20%);
-  transition: transform 0.2s ease;
-  width: 120%;
-}
-
-.btn-20:hover:before {
-  transform: skew(45deg) translateX(75%);
-}
-
-.btn-20:disabled {
-  cursor: default;
-}
-
-.btn-20:-moz-focusring {
-  outline: auto;
-}
-
-.btn-20 svg {
-  display: block;
-  vertical-align: middle;
-}
-
-.btn-20 [hidden] {
+.wrap-check-50 input[type="checkbox"] {
   display: none;
+  visibility: hidden;
 }
 
-.btn-21,
-.btn-21 *,
-.btn-21 :after,
-.btn-21 :before,
-.btn-21:after,
-.btn-21:before {
-  border: 0 solid;
-  box-sizing: border-box;
+.wrap-check-50 label {
+  display: inline-block;
 }
 
-.btn-21 {
-  -webkit-tap-highlight-color: transparent;
-  -webkit-appearance: button;
-  background-color: #000;
-  background-image: none;
-  color: #fff;
+.wrap-check-50 .check {
   cursor: pointer;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
-  font-size: 100%;
-  font-weight: 900;
+  position: relative;
   margin: 0;
-  -webkit-mask-image: -webkit-radial-gradient(#000, #fff);
-  padding: 0;
-  text-transform: uppercase;
-  border-radius: 99rem;
-  border-width: 2px;
-  overflow: hidden;
-  padding: 0.8rem 3rem;
-  position: absolute; /* 절대 위치 설정 */
-  right: 230px; /* .btn-20보다 왼쪽에 위치하도록 설정 (150px 버튼 너비 + 40px 간격) */
-  top: 30px; /* 위에서 30px 떨어지도록 설정 */
-  text-align: center; /* 텍스트 가운데 정렬 */
-  width: 180px; /* 버튼 너비 설정 */
-  height: 50px; /* 버튼 높이 설정 */
+  width: 18px;
+  height: 18px;
+  -webkit-tap-highlight-color: transparent;
+  transform: translate3d(0, 0, 0);
 }
 
-.btn-21 span {
-  mix-blend-mode: difference;
-}
-
-.btn-21:before {
-  background: #fff;
+.wrap-check-50 .check:before {
   content: "";
-  display: block;
-  height: 100%;
-  left: -100%;
   position: absolute;
-  top: 0;
-  transform: skew(0deg) translateX(-20%);
-  transition: transform 0.2s ease;
-  width: 120%;
+  top: -15px;
+  left: -15px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(34, 50, 84, 0.03);
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
-.btn-21:hover:before {
-  transform: skew(45deg) translateX(75%);
+.wrap-check-50 .check svg {
+  position: relative;
+  z-index: 1;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke: #c8ccd4;
+  stroke-width: 1.5;
+  transform: translate3d(0, 0, 0);
+  transition: all 0.2s ease;
 }
 
-.btn-21:disabled {
-  cursor: default;
+.wrap-check-50 .check svg path {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 0;
 }
 
-.btn-21:-moz-focusring {
-  outline: auto;
+.wrap-check-50 .check svg polyline {
+  stroke-dasharray: 22;
+  stroke-dashoffset: 66;
 }
 
-.btn-21 svg {
-  display: block;
-  vertical-align: middle;
+.wrap-check-50 .check:hover:before {
+  opacity: 1;
 }
 
-.btn-21 [hidden] {
+.wrap-check-50 .check:hover svg {
+  stroke: #4285f4;
+}
+
+.wrap-check-50 input[type="checkbox"]:checked + .check svg {
+  stroke: #4285f4;
+}
+
+.wrap-check-50 input[type="checkbox"]:checked + .check svg path {
+  stroke-dashoffset: 60;
+  transition: all 0.3s linear;
+}
+
+.wrap-check-50 input[type="checkbox"]:checked + .check svg polyline {
+  stroke-dashoffset: 42;
+  transition: all 0.2s linear;
+  transition-delay: 0.15s;
+}
+
+.checkbox-label {
+  margin-left: 8px; /* 체크 박스와 텍스트 사이의 여백 조정 */
+  font-size: 14px; /* 텍스트 크기 조정 */
+  color: #333; /* 텍스트 색상 조정 */
+}
+
+/* 기본 설정 */
+.human-icon-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* human-icon 이미지 스타일 */
+.human-icon {
+  width: 100px;  /* 이미지 크기 설정 */
+  height: 100px; /* 이미지 크기 설정 */
+  cursor: pointer;
+  transition: transform 0.3s ease; /* 호버 시 효과를 부드럽게 적용 */
+}
+/* 네모 창 스타일 */
+.human-icon-dropdown {
   display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 10px;
+  width: 150px; /* 원하는 가로 크기 설정 */
+  z-index: 1000;
+}
+
+/* 호버 시 네모 창 보이기 */
+.human-icon-wrapper:hover .human-icon-dropdown {
+  display: block;
+}
+
+/* 네모 창 안의 링크 스타일 */
+.human-icon-dropdown a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.human-icon-dropdown a:hover {
+  background-color: #f0f0f0;
 }

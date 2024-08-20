@@ -8,20 +8,33 @@
 </head>
 <body>
 
-    <div class="header">
-        <div><div class="wrap-input-18">
-          <div class="search">
-            <div>
-              <input type="text" placeholder="Search . . .">
-            </div>
-          </div>
-        </div></div>
+  <div class="header">
+    <div class="wrap-input-18">
+      <div class="search">
+        <div>
+          <input type="text" placeholder="Search . . .">
+        </div>
+      </div>
     </div>
+
+    <!-- human-icon-wrapper: 이미지와 링크를 감싸는 부모 요소 -->
+    <div class="human-icon-wrapper">
+      <img class="human-icon" src="human-icon.png" alt="Human Icon">
+      <!-- 네모 창 추가 -->
+      <div class="human-icon-dropdown">
+        <a href="login.html" class="human-icon-button">로그인</a>
+        <a href="signup.html" class="human-icon-button">회원가입</a>
+      </div>
+    </div>
+</div>
+
 
     <div class="logo">
       <a href="index.html">
       <img src="team_logo.png" alt="logo">
+      </a>
     </div>
+
     <div class="container">
         <div class="sidebar">
             <a href="#">닭가슴살 기준</a>
@@ -33,13 +46,6 @@
         <div class="content">
             <div class="box">닭가슴살 사진</div>
         </div>
-
-        <button class="btn-20" onclick="window.location.href='login.html';">
-          <span>로그인</span>
-        </button>
-        <button class="btn-21" onclick="window.location.href='signup.html';">
-          <span>회원가입</span>
-        </button>
     </div>
 
 </body>

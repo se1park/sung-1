@@ -3,40 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LOGIN</title>
+    <title>SIGNUP</title>
     <link rel="stylesheet" href="app.css">
     <link rel="stylesheet" href="signup.css">
 </head>
 <body>
 
     <div class="header">
-        <div>
-            <div class="wrap-input-18">
-                <div class="search">
-                    <div>
-                        <input type="text" placeholder="Search . . .">
-                    </div>
-                </div>
+        <div class="wrap-input-18">
+          <div class="search">
+            <div>
+              <input type="text" placeholder="Search . . .">
             </div>
+          </div>
+        </div>
+    
+        <!-- human-icon-wrapper: 이미지와 링크를 감싸는 부모 요소 -->
+        <div class="human-icon-wrapper">
+          <img class="human-icon" src="human-icon.png" alt="Human Icon">
+          <!-- 네모 창 추가 -->
+          <div class="human-icon-dropdown">
+            <a href="login.html" class="human-icon-button">로그인</a>
+            <a href="signup.html" class="human-icon-button">회원가입</a>
+          </div>
         </div>
     </div>
-
+    
+      
     <div class="logo">
         <a href="index.html">
             <img src="team_logo.png" alt="logo">
         </a>
     </div>
+    <!-- human-icon-wrapper: 이미지와 링크를 감싸는 부모 요소 -->
+  
 
-    <div class="container">
-        <!-- 로그인 버튼 -->
-        <button class="btn-20" onclick="window.location.href='login.html';">
-            <span>로그인</span>
-        </button>
-        <!-- 회원가입 버튼 -->
-        <button class="btn-21" onclick="window.location.href='signup.html';">
-            <span>회원가입</span>
-        </button>
-    </div>
 
     <!-- 로그인 폼 -->
     <div class="signup-form">
@@ -52,10 +53,6 @@
             <label for="nickname"></label>
             <input type="naickname" id="nickname" name="nickname" placeholder="NICKNAME" required>
         </div> 
-        <div class="input-group">
-            <label for="phonenumber"></label>
-            <input type="phonenumber" id="phonenumber" name="phonenumber" placeholder="PHONENUMBER" required>
-        </div>
         <div class="input-group">
             <button type="submit" class="login-btn">회원가입</button>
         </div>
