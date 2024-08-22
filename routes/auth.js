@@ -26,4 +26,13 @@ router.get('/google/callback', passport.authenticate('google', {
   failureRedirect: '/'            // 실패 시 리다이렉트할 경로
 }));
 
+// 네이버 로그인 라우트
+router.get('/naver', passport.authenticate('naver', { scope: ['email']}));
+
+// 네이버 로그인 콜백 라우트
+router.get('/naver/callback', passport.authenticate('naver',{
+    successRedirect: '/dashboard', // 성공 시 리다이렉트할 경로
+    failureRedirect: '/'           // 실패 시 리다이렉트할 경로           
+}))
+
 module.exports = router;

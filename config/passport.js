@@ -1,5 +1,6 @@
 const KakaoStrategy = require('passport-kakao').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const NaverStrategy = require('passport-naver').Strategy;
 const User = require('../models/User');
 
 module.exports = (passport) => {
@@ -53,6 +54,30 @@ module.exports = (passport) => {
     }
   }));
 
+  passport.use(new NaverStrategy({
+    clientID: process.env.NAVER_CLIENT_ID,
+    clientSecret: process.env.NAVER_CLIENT_SECRET,
+    callbackURL: "http://localhost:8000/auth/naver/callback"
+  }, async (accessToken, refreshToken, profile, done) => {
+    try {
+      // 프로필에서 이메일 정보 추출
+      const email = profile.emails[0].value;
+
+      // 이메일을 이용해 유처를 찾거나 새로 생성
+      let user = await User.findOne({email});
+      if(!user){
+        user = await User.create({
+          username: profile.displayName || "Naver User",
+          email,
+          password: null,
+          provider: 'naver'
+        });
+      }
+      done(null, user);
+    } catch (err){
+      done(err);
+    }
+  }));
   // 유저 직렬화 (세션에 저장)
   passport.serializeUser((user, done) => {
     done(null, user.id);
