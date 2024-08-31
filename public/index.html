@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
+    <title>Signup and Recommendation</title>
+    <link rel="stylesheet" href="button.css"> <!-- CSS 파일 링크 -->
 </head>
 <body>
     <h1>Signup Form</h1>
@@ -22,57 +23,160 @@
 
     <hr>
 
-    <h2>소셜 로그인</h2>
+    <h2>닭가슴살 추천 받기</h2>
+    <div id="question-container" style="display: none;">
+        <p id="question"></p>
+        <div id="answer-container">
+            <input type="text" id="answer" placeholder="Your answer" style="display:none;"><br><br>
+            <button id="yes-btn" style="display:none;">Yes</button>
+            <button id="no-btn" style="display:none;">No</button>
+            <button id="submit-answer" style="display:none;">답변 제출</button>
+        </div>
+    </div>
 
-    <!-- 카카오 로그인 버튼 -->
+    <hr>
+    
+    <h2>추천 결과</h2>
+    <div id="recommendation-results">추천 결과가 없습니다.</div>
+
+    <hr>
+
+    <h2>소셜 로그인</h2>
     <button id="kakao-login-btn">카카오 로그인</button>
-    
-    <!-- 구글 로그인 버튼 -->
     <button id="google-login-btn">구글 로그인</button>
-    
-    <!-- 네이버 로그인 버튼 -->
     <button id="naver-login-btn">네이버 로그인</button>
 
     <script>
-        // 회원가입 처리
-        document.getElementById('signup-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        let questions = [];
+        let currentQuestionIndex = 0;
 
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
+        async function fetchQuestions() {
             try {
-                const response = await fetch('/auth/signup', {  // 여기서 경로를 '/auth/signup'으로 변경
+                const response = await fetch('http://localhost:8000/api/chicken-breast/questions');
+                if (response.ok) {
+                    questions = await response.json();
+                    if (questions.length > 0) {
+                        displayQuestion(questions[currentQuestionIndex]);
+                        document.getElementById('question-container').style.display = 'block'; // 질문 컨테이너를 표시
+                    } else {
+                        document.getElementById('question-container').innerText = '질문이 없습니다.';
+                    }
+                } else {
+                    console.error('질문 목록을 가져오는 데 실패했습니다:', response.statusText);
+                }
+            } catch (error) {
+                console.error('질문 목록을 가져오는 데 실패했습니다:', error);
+            }
+        }
+
+        function displayQuestion(question) {
+            const questionElement = document.getElementById('question');
+            const answerInput = document.getElementById('answer');
+            const yesBtn = document.getElementById('yes-btn');
+            const noBtn = document.getElementById('no-btn');
+            const submitBtn = document.getElementById('submit-answer');
+            const answerContainer = document.getElementById('answer-container');
+
+            questionElement.innerText = question;
+
+            // 초기화: 모든 입력과 버튼을 숨김
+            answerInput.style.display = 'none';
+            yesBtn.style.display = 'none';
+            noBtn.style.display = 'none';
+            submitBtn.style.display = 'none';
+
+            // 질문에 따라 다른 입력 방식 보여주기
+            if (currentQuestionIndex === 0) {
+                yesBtn.style.display = 'inline-block';
+                noBtn.style.display = 'inline-block';
+            } else if (currentQuestionIndex === 1 || currentQuestionIndex === 2) {
+                answerInput.style.display = 'inline-block';
+                submitBtn.style.display = 'inline-block';
+            }
+
+            answerContainer.style.display = 'flex'; // 답변 컨테이너를 보이게 함
+        }
+
+        async function processAnswer(answer) {
+            try {
+                const response = await fetch('http://localhost:8000/api/chicken-breast/question', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, email, password })
+                    body: JSON.stringify({ answer })
                 });
                 const data = await response.json();
 
+                console.log('서버 응답:', data);
+
                 if (response.ok) {
-                    alert('User created successfully!');
+                    currentQuestionIndex++;
+                    if (currentQuestionIndex < questions.length) {
+                        displayQuestion(questions[currentQuestionIndex]);
+                    } else if (data.products && data.products.length > 0) {
+                        displayRecommendations(data.products);
+                        resetUI();
+                    } else {
+                        document.getElementById('recommendation-results').innerText = '추천 결과가 없습니다.';
+                    }
                 } else {
-                    alert('Error: ' + data.message);
+                    console.error('서버 응답 에러:', data.message);
                 }
             } catch (error) {
-                alert('Failed to signup: ' + error.message);
+                console.error('추천을 가져오는데 실패했습니다:', error);
+            }
+        }
+
+        document.getElementById('submit-answer').addEventListener('click', async () => {
+            const answer = document.getElementById('answer').value;
+            if (answer.trim()) {
+                await processAnswer(answer);
             }
         });
 
-        // 카카오 로그인 처리
+        document.getElementById('yes-btn').addEventListener('click', async () => {
+            await processAnswer('Yes');
+        });
+
+        document.getElementById('no-btn').addEventListener('click', async () => {
+            await processAnswer('No');
+        });
+
+        function displayRecommendations(products) {
+            const resultsElement = document.getElementById('recommendation-results');
+            resultsElement.innerHTML = products.map(product => `
+                <div>
+                    <h3>${product.name}</h3>
+                    <p>Flavor: ${product.flavor}</p>
+                    <p>Price: ${product.price}</p>
+                    <p>Rating: ${product.rating}</p>
+                    <img src="${product.image_url}" alt="${product.name}" width="100">
+                </div>
+            `).join('');
+        }
+
+        function resetUI() {
+            document.getElementById('question').innerText = '';
+            document.getElementById('answer').style.display = 'none';
+            document.getElementById('yes-btn').style.display = 'none';
+            document.getElementById('no-btn').style.display = 'none';
+            document.getElementById('submit-answer').style.display = 'none';
+            document.getElementById('answer-container').style.display = 'none';
+        }
+
+        // 페이지 로드 시 질문 목록을 가져옴
+        document.addEventListener('DOMContentLoaded', fetchQuestions);
+
+        // 소셜 로그인 버튼 이벤트 추가
         document.getElementById('kakao-login-btn').addEventListener('click', () => {
-            window.location.href = '/auth/kakao'; // 카카오 로그인 경로로 리다이렉트
+            window.location.href = 'http://localhost:8000/auth/kakao';
         });
 
-        // 구글 로그인 처리
         document.getElementById('google-login-btn').addEventListener('click', () => {
-            window.location.href = '/auth/google'; // 구글 로그인 경로로 리다이렉트
+            window.location.href = 'http://localhost:8000/auth/google';
         });
 
-        // 네이버 로그인 처리
         document.getElementById('naver-login-btn').addEventListener('click', () => {
-            window.location.href = '/auth/naver'; // 네이버 로그인 경로로 리다이렉트
+            window.location.href = 'http://localhost:8000/auth/naver';
         });
     </script>
 </body>

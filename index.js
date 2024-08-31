@@ -1,9 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const passport = require('passport'); 
+const cors = require('cors');
 const path = require('path');
-const session = require('express-session'); 
-const cors = require('cors');  
+const session = require('express-session');
+const passport = require('passport');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -11,31 +11,35 @@ const PORT = process.env.PORT || 8000;
 require('dotenv').config();
 require('./config/passport')(passport); // passport 설정 불러오기
 
-// 세션 설정 (필수)
+// 세션 설정
 app.use(session({
-  secret: process.env.SESSION_SECRET,  // 세션 암호화 키
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true
 }));
 
 app.use(passport.initialize());
-app.use(passport.session());  // 세션에 passport 연결
+app.use(passport.session());
 
 app.use(express.json());
 app.use(cors());
 
+// 라우터 가져오기
 const authRouter = require('./routes/auth');
 const profileRouter = require('./routes/profile');
 const userRouters = require('./router/user');
-const chickenBreastRouter = require('./router/ChickenBreastRouter');
+const chickenBreastRouter = require('./router/ChickenBreastRouter'); 
 const recipeRouter = require('./router/recipeRouter');
 
-// MongoDB 연결
-mongoose.connect('mongodb+srv://tjdwns8083:12345@cluster0.yfjlzuv.mongodb.net/ouruser?retryWrites=true&w=majority')
-  .then(() => console.log('mongodb connected'))
-  .catch(err => console.log('MongoDB connection error:', err));
+// MongoDB URI를 환경 변수에서 가져옵니다.
+const mongoURI = process.env.MONGO_URI;
 
-// 정적 파일 제공 (필요할 경우)
+// MongoDB 연결
+mongoose.connect(mongoURI || 'mongodb://localhost:27017/ouruser') 
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.log(err));
+
+// 정적 파일 제공
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 루트 경로에 대한 핸들러 추가
@@ -46,20 +50,22 @@ app.get('/', (req, res) => {
 // 대시보드 경로 추가
 app.get('/dashboard', (req, res) => {
   if (req.isAuthenticated()) {
-    res.send('<h1>Welcome to your dashboard</h1>');  // 로그인 성공 시 표시할 내용
+    res.send('<h1>Welcome to your dashboard</h1>');
   } else {
-    res.redirect('/');  // 로그인되지 않은 경우 루트로 리다이렉트
+    res.redirect('/');
   }
 });
 
+// 추천 로직 엔드포인트
+app.use('/api/chicken-breast', chickenBreastRouter);
+
 // API 라우트 설정
-app.use('/auth', authRouter); // auth 라우트 추가
+app.use('/auth', authRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/users', userRouters);
-app.use('/api/chickenBreasts', chickenBreastRouter);
 app.use('/api/recipes', recipeRouter);
 
-// 에러 처리 미들웨어 (선택 사항)
+// 에러 처리 미들웨어
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: 'Internal Server Error' });

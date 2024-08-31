@@ -1,7 +1,8 @@
+// router/ChickenBreastRouter.js
 const express = require('express');
 const router = express.Router();
-const ChickenBreast = require('../models/chickenBreast'); // 경로의 대소문자 일치
-const { recommendChickenBreasts } = require('../controllers/chickenBreastController');
+const ChickenBreast = require('../models/ChickenBreast');
+const ChickenBreastController = require('../controllers/ChickenBreastController'); // 수정된 부분
 
 // 모든 닭가슴살 목록 가져오기
 router.get('/', async (req, res) => {
@@ -13,13 +14,21 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/recommend', recommendChickenBreasts);
+// 질문 목록 엔드포인트
+router.get('/questions', ChickenBreastController.getQuestions); // 수정된 부분
 
-// 닭가슴살 추천
+// 닭가슴살 추천 질문 처리 (POST 요청)
+router.post('/question', ChickenBreastController.recommendChickenBreasts);
+
+// 닭가슴살 추천하기 (POST 요청)
 router.post('/recommend', async (req, res) => {
   try {
     const { userId, chickenBreastId } = req.body;
     const chickenBreast = await ChickenBreast.findById(chickenBreastId);
+
+    if (!chickenBreast) {
+      return res.status(404).json({ error: 'Chicken breast not found' });
+    }
 
     if (!chickenBreast.recommendedBy.includes(userId)) {
       chickenBreast.recommendedBy.push(userId);

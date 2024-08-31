@@ -16,7 +16,7 @@ class ChickenBreastControl:
             print("URL 크롤링 시작")
             driver = get_chrome_driver()
 
-            file_path = 'C:\\my-backend\\sources\\ChickenBreast_data.json'
+            file_path = 'C:\\my-backend\\sources\\ChickenBreast.json'
 
             # 파일 권한 확인
             if not self.check_file_permissions(file_path):
@@ -34,9 +34,9 @@ class ChickenBreastControl:
             print("URL 크롤링 종료")
             print("-------------------------")
 
-            print("Data 크롤링 시작")
-            self.get_product_data(driver, json_data)
-            print("Data 크롤링 종료")
+            # MongoDB에 URL 데이터 저장
+            self.save_urls_to_mongodb(json_data)
+            print("URL 데이터가 MongoDB에 저장되었습니다.")
             
             return True
         except Exception as e:
@@ -92,53 +92,29 @@ class ChickenBreastControl:
 
         return product_urls
 
-    def get_product_data(self, driver, urls):
-        product_data = []
+    def save_urls_to_mongodb(self, urls):
+        mongo_uri = os.getenv('MONGO_URI', 'mongodb+srv://tjdwns8083:12345@cluster0.yfjlzuv.mongodb.net/')
+        client = None  # client 변수를 None으로 초기화
+        
+        try:
+            client = MongoClient(mongo_uri)
+            db = client['ouruser']
+            collection = db['crawlerchickenbreasts']
 
-        for url in urls:
-            driver.get(url)
-            try:
-                # Wait for elements to be present
-                WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, 'div.top-badge img'))
-                )
+            if urls:
+                url_documents = [{'url': url} for url in urls]  # URL을 문서로 변환
+                collection.insert_many(url_documents)
+                print(f"Successfully saved {len(url_documents)} URLs to MongoDB.")
+            else:
+                print("No URLs to save.")
                 
-                name = driver.find_element(By.CSS_SELECTOR, 'p.tit a').text
-                flavor = "N/A"  # flavor 정보가 필요하다면 적절한 선택자를 사용해 추가합니다.
-                price = driver.find_element(By.CSS_SELECTOR, 'span.price em.num').text
-                image_url = driver.find_element(By.CSS_SELECTOR, 'div.top-badge img.lozad').get_attribute('src')
-
-                product_data.append({
-                    'name': name,
-                    'flavor': flavor,
-                    'price': price,
-                    'image_url': image_url
-                })
-            except Exception as e:
-                print(f"Error scraping product data from {url}: {e}")
-
-        return product_data
-
-        # # 데이터를 파일에 저장
-        # with open('C:\\my-backend\\sources\\ChickenBreast_data.json', 'w', encoding='utf-8') as f:
-        #     json.dump(product_data, f, ensure_ascii=False, indent=4)
-
-    def save_to_mongodb(self, product_data):
-        mongo_uri = os.getenv('MONGO_URI', 'mongodb+srv://tjdwns8083:12345@cluster0.mongodb.net/ouruser?retryWrites=true&w=majority')  # MongoDB Atlas URI로 변경
-        client = MongoClient(mongo_uri)
-        db = client['ouruser']
-        collection = db['cralwerchickenbreasts']
-
-        # 기존 데이터를 지우지 않고 새 데이터 추가
-        if product_data:
-            collection.insert_many(product_data)
-        else:
-            print("저장할 데이터가 없습니다.")
-
-        # 연결 종료
-        client.close()
-
-
+        except Exception as e:
+            print(f"Error saving URLs to MongoDB: {e}")
+        
+        finally:
+            if client:
+                client.close()
+                
 if __name__ == "__main__":
     crawler = ChickenBreastControl()
     crawler.start()

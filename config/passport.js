@@ -2,6 +2,7 @@ const KakaoStrategy = require('passport-kakao').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const NaverStrategy = require('passport-naver').Strategy;
 const User = require('../models/User');
+// 로그인
 
 module.exports = (passport) => {
   // Kakao 전략 설정
