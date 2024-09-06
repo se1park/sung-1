@@ -10,33 +10,33 @@ document.addEventListener('DOMContentLoaded', () => {
     // 회원가입 폼 처리
     signupForm.addEventListener('submit', async (event) => {
         event.preventDefault();
-
+    
         // 폼 필드에서 값을 가져옴
         const username = document.getElementById('username').value;
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
-
+    
         try {
             const response = await fetch('http://localhost:8000/auth/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, email, password })
             });
-
+    
             const data = await response.json();
-            const messageElement = document.getElementById('signup-message');
-
+    
             if (response.ok) {
-                messageElement.innerText = '회원가입이 성공적으로 완료되었습니다.';
+                alert('회원가입이 성공적으로 완료되었습니다.');
                 // 성공 시 추가 작업 (예: 로그인 페이지로 리다이렉션)
             } else {
-                messageElement.innerText = data.message || '회원가입에 실패했습니다. 다시 시도하세요.';
+                alert(data.message || '회원가입에 실패했습니다. 다시 시도하세요.');
             }
         } catch (error) {
             console.error('회원가입 오류:', error);
             alert('서버 오류가 발생했습니다. 나중에 다시 시도하세요.');
         }
     });
+    
     // 아이디 찾기 폼 처리
     findUsernameForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -44,17 +44,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const response = await fetch('http://localhost:8000/auth/find-username', {
-                method: 'GET',
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email })
             });
 
             const data = await response.json();
-            const messageElement = document.getElementById('find-username-message');
             if (response.ok) {
-                messageElement.innerText = `아이디: ${data.username}`;
+                alert(`아이디: ${data.username}\n이메일: ${email}`);
             } else {
-                messageElement.innerText = data.message || '이메일이 존재하지 않습니다. 다시 시도하세요.';
+                alert(data.message || '이메일이 존재하지 않습니다. 다시 시도하세요.');
             }
         } catch (error) {
             console.error('아이디 찾기 오류:', error);
@@ -76,11 +75,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             const data = await response.json();
-            const messageElement = document.getElementById('find-password-message');
             if (response.ok) {
-                messageElement.innerText = '비밀번호 재설정 링크가 이메일로 전송되었습니다.';
+                alert('비밀번호 재설정 링크가 이메일로 전송되었습니다.');
             } else {
-                messageElement.innerText = data.message || '이메일 또는 사용자 이름이 일치하지 않습니다. 다시 시도하세요.';
+                alert(data.message || '이메일 또는 사용자 이름이 일치하지 않습니다. 다시 시도하세요.');
             }
         } catch (error) {
             console.error('비밀번호 찾기 오류:', error);

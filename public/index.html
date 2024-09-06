@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup and Recommendation</title>
-    <link rel="stylesheet" href="../style/button.css"> <!-- CSS 파일 링크 -->
+    <link rel="stylesheet" href="./style/button.css"> <!-- CSS 파일 링크 -->
 </head>
 <body>
+    <div id="signup-message"></div> <!-- 회원가입 메시지 출력 요소 -->
+
+
     <h1>Signup Form</h1>
     <form id="signup-form" method="POST">
         <label for="username">Username:</label><br>
@@ -29,6 +32,7 @@
     
         <button type="submit">아이디 찾기</button>
     </form>
+    <div id="find-username-message"></div> <!-- 아이디 찾기 메시지 출력 요소 -->
 
     <!-- 비밀번호 찾기 폼 -->
     <h2>비밀번호 찾기</h2>
@@ -41,6 +45,7 @@
 
         <button type="submit">비밀번호 찾기</button>
     </form>
+    <div id="find-password-message"></div> <!-- 비밀번호 찾기 메시지 출력 요소 -->
     
     <hr>
 
@@ -66,6 +71,6 @@
     <button id="kakao-login-btn">카카오 로그인</button>
     <button id="google-login-btn">구글 로그인</button>
     <button id="naver-login-btn">네이버 로그인</button>
-    <script src="../scripts.js" defer></script> <!-- JavaScript 파일 링크 -->
+    <script src="/scripts.js" defer></script> <!-- JavaScript 파일 링크 -->
 </body>
 </html>
