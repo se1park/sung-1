@@ -59,7 +59,6 @@ const cleanData = (product) => {
 };
 
 // 사용자의 응답 간 유사도를 계산하는 함수
-// 사용자의 응답 간 유사도를 계산하는 함수
 const calculateSimilarity = (answers1, answers2) => {
     let score = 0;
     const length = Math.min(answers1.length, answers2.length); // 두 배열의 최소 길이

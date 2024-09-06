@@ -55,6 +55,7 @@ module.exports = (passport) => {
     }
   }));
 
+  // 네이버 전략 설정
   passport.use(new NaverStrategy({
     clientID: process.env.NAVER_CLIENT_ID,
     clientSecret: process.env.NAVER_CLIENT_SECRET,

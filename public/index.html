@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Signup and Recommendation</title>
-    <link rel="stylesheet" href="button.css"> <!-- CSS 파일 링크 -->
+    <link rel="stylesheet" href="../style/button.css"> <!-- CSS 파일 링크 -->
 </head>
 <body>
     <h1>Signup Form</h1>
-    <form id="signup-form">
+    <form id="signup-form" method="POST">
         <label for="username">Username:</label><br>
         <input type="text" id="username" name="username" required><br><br>
 
@@ -21,6 +21,27 @@
         <button type="submit">회원가입</button>
     </form>
 
+    <!-- 아이디 찾기 폼 -->
+    <h2>아이디 찾기</h2>
+    <form id="find-username-form" method="POST">
+        <label for="find-email">이메일 입력:</label><br>
+        <input type="email" id="find-email" name="find-email" required><br><br>
+    
+        <button type="submit">아이디 찾기</button>
+    </form>
+
+    <!-- 비밀번호 찾기 폼 -->
+    <h2>비밀번호 찾기</h2>
+    <form id="find-password-form" method="POST">
+        <label for="find-username">아이디 입력:</label><br>
+        <input type="text" id="find-username" name="find-username" required><br><br>
+
+        <label for="find-password-email">이메일 입력:</label><br>
+        <input type="email" id="find-password-email" name="find-password-email" required><br><br>
+
+        <button type="submit">비밀번호 찾기</button>
+    </form>
+    
     <hr>
 
     <h2>닭가슴살 추천 받기</h2>
@@ -45,139 +66,6 @@
     <button id="kakao-login-btn">카카오 로그인</button>
     <button id="google-login-btn">구글 로그인</button>
     <button id="naver-login-btn">네이버 로그인</button>
-
-    <script>
-        let questions = [];
-        let currentQuestionIndex = 0;
-
-        async function fetchQuestions() {
-            try {
-                const response = await fetch('http://localhost:8000/api/chicken-breast/questions');
-                if (response.ok) {
-                    questions = await response.json();
-                    if (questions.length > 0) {
-                        displayQuestion(questions[currentQuestionIndex]);
-                        document.getElementById('question-container').style.display = 'block'; // 질문 컨테이너를 표시
-                    } else {
-                        document.getElementById('question-container').innerText = '질문이 없습니다.';
-                    }
-                } else {
-                    console.error('질문 목록을 가져오는 데 실패했습니다:', response.statusText);
-                }
-            } catch (error) {
-                console.error('질문 목록을 가져오는 데 실패했습니다:', error);
-            }
-        }
-
-        function displayQuestion(question) {
-            const questionElement = document.getElementById('question');
-            const answerInput = document.getElementById('answer');
-            const yesBtn = document.getElementById('yes-btn');
-            const noBtn = document.getElementById('no-btn');
-            const submitBtn = document.getElementById('submit-answer');
-            const answerContainer = document.getElementById('answer-container');
-
-            questionElement.innerText = question;
-
-            // 초기화: 모든 입력과 버튼을 숨김
-            answerInput.style.display = 'none';
-            yesBtn.style.display = 'none';
-            noBtn.style.display = 'none';
-            submitBtn.style.display = 'none';
-
-            // 질문에 따라 다른 입력 방식 보여주기
-            if (currentQuestionIndex === 0) {
-                yesBtn.style.display = 'inline-block';
-                noBtn.style.display = 'inline-block';
-            } else if (currentQuestionIndex === 1 || currentQuestionIndex === 2) {
-                answerInput.style.display = 'inline-block';
-                submitBtn.style.display = 'inline-block';
-            }
-
-            answerContainer.style.display = 'flex'; // 답변 컨테이너를 보이게 함
-        }
-
-        async function processAnswer(answer) {
-            try {
-                const response = await fetch('http://localhost:8000/api/chicken-breast/question', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ answer })
-                });
-                const data = await response.json();
-
-                console.log('서버 응답:', data);
-
-                if (response.ok) {
-                    currentQuestionIndex++;
-                    if (currentQuestionIndex < questions.length) {
-                        displayQuestion(questions[currentQuestionIndex]);
-                    } else if (data.products && data.products.length > 0) {
-                        displayRecommendations(data.products);
-                        resetUI();
-                    } else {
-                        document.getElementById('recommendation-results').innerText = '추천 결과가 없습니다.';
-                    }
-                } else {
-                    console.error('서버 응답 에러:', data.message);
-                }
-            } catch (error) {
-                console.error('추천을 가져오는데 실패했습니다:', error);
-            }
-        }
-
-        document.getElementById('submit-answer').addEventListener('click', async () => {
-            const answer = document.getElementById('answer').value;
-            if (answer.trim()) {
-                await processAnswer(answer);
-            }
-        });
-
-        document.getElementById('yes-btn').addEventListener('click', async () => {
-            await processAnswer('Yes');
-        });
-
-        document.getElementById('no-btn').addEventListener('click', async () => {
-            await processAnswer('No');
-        });
-
-        function displayRecommendations(products) {
-            const resultsElement = document.getElementById('recommendation-results');
-            resultsElement.innerHTML = products.map(product => `
-                <div>
-                    <h3>${product.name}</h3>
-                    <p>Flavor: ${product.flavor}</p>
-                    <p>Price: ${product.price}</p>
-                    <p>Rating: ${product.rating}</p>
-                    <img src="${product.image_url}" alt="${product.name}" width="100">
-                </div>
-            `).join('');
-        }
-
-        function resetUI() {
-            document.getElementById('question').innerText = '';
-            document.getElementById('answer').style.display = 'none';
-            document.getElementById('yes-btn').style.display = 'none';
-            document.getElementById('no-btn').style.display = 'none';
-            document.getElementById('submit-answer').style.display = 'none';
-            document.getElementById('answer-container').style.display = 'none';
-        }
-
-        // 페이지 로드 시 질문 목록을 가져옴
-        document.addEventListener('DOMContentLoaded', fetchQuestions);
-
-        // 소셜 로그인 버튼 이벤트 추가
-        document.getElementById('kakao-login-btn').addEventListener('click', () => {
-            window.location.href = 'http://localhost:8000/auth/kakao';
-        });
-
-        document.getElementById('google-login-btn').addEventListener('click', () => {
-            window.location.href = 'http://localhost:8000/auth/google';
-        });
-
-        document.getElementById('naver-login-btn').addEventListener('click', () => {
-            window.location.href = 'http://localhost:8000/auth/naver';
-        });
-    </script>
+    <script src="../scripts.js" defer></script> <!-- JavaScript 파일 링크 -->
 </body>
 </html>
