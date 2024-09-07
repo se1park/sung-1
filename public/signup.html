@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGNUP</title>
+    <link rel="stylesheet" href="app.css">
+    <link rel="stylesheet" href="signup.css">
+    <script src="/component/signup.js" defer></script> <!-- scripts.js 파일을 포함 -->
+</head>
+<body>
+
+    <div class="header">
+        <div class="wrap-input-18">
+          <div class="search">
+            <div>
+              <input type="text" placeholder="Search . . .">
+            </div>
+          </div>
+        </div>
+    
+        <!-- human-icon-wrapper: 이미지와 링크를 감싸는 부모 요소 -->
+        <div class="human-icon-wrapper">
+          <img class="human-icon" src="human-icon.png" alt="Human Icon">
+          <!-- 네모 창 추가 -->
+          <div class="human-icon-dropdown">
+            <a href="login.html" class="human-icon-button">로그인</a>
+            <a href="signup.html" class="human-icon-button">회원가입</a>
+          </div>
+        </div>
+    </div>
+    
+    <div class="logo">
+        <a href="index.html">
+            <img src="team_logo.png" alt="logo">
+        </a>
+    </div>
+    
+    <!-- 회원가입 폼 -->
+    <div class="signup-form">
+        <form id="signup-form" method="POST" action="/auth/signup">
+            <div class="input-group">
+                <label for="email"></label>
+                <input type="email" id="email" name="email" placeholder="E-MAIL" required>
+            </div>
+            <div class="input-group">
+                <label for="password"></label>
+                <input type="password" id="password" name="password" placeholder="PW" required>
+            </div>
+            <div class="input-group">
+                <label for="username"></label>
+                <input type="text" id="username" name="username" placeholder="NICKNAME" required>
+            </div> 
+            <div class="input-group">
+                <button type="submit" class="login-btn">회원가입</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

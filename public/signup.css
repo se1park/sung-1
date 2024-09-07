@@ -1,0 +1,81 @@
+/* 페이지의 전체 높이와 너비를 설정 */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* 수직 정렬을 상단으로 설정 */
+    align-items: center; /* 수평 중앙 정렬 */
+    /* height: 100vh; 화면 전체 높이 */
+    height: auto; /* 화면 전체 높이*/
+    margin-top: 120px;
+    padding-top: 50px; /* 상단에 여백 추가 */
+}
+
+.signup-form form {
+    background-color: #f7f7f7; /* 폼의 배경색 */
+    padding: 20px;
+    border-radius: 10px;
+    width: 360px; /* 폼의 너비 */
+}
+
+
+/* 입력 필드 스타일 */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 95%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+/* 로그인 버튼 스타일 */
+.input-group button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/* 로그인 버튼 스타일 */
+.input-group button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* 로그인 버튼 스타일 */
+.login-btn {
+    margin-top: 20px;
+    width: 100%; /* 아이디 입력 칸과 동일한 너비 */
+    padding: 10px; /* 입력 칸과 동일한 패딩 */
+    font-size: 16px; /* 텍스트 크기 설정 */
+    color: white; /* 텍스트 색상 */
+    background-color: #333; /* 버튼 배경색 */
+    border: none; /* 기본 테두리 제거 */
+    border-radius: 5px; /* 입력 칸과 동일한 모서리 둥글기 */
+    cursor: pointer; /* 커서 모양을 포인터로 변경 */
+}
+
+/* 로그인 버튼 호버 효과 */
+.login-btn:hover {
+    background-color: #555; /* 호버 시 배경색 변경 */
+}

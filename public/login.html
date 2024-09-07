@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN</title>
+    <link rel="stylesheet" href="App.css">
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+ <div class="header">
+    <div class="wrap-input-18">
+      <div class="search">
+        <div>
+          <input type="text" placeholder="Search . . .">
+        </div>
+      </div>
+    </div>
+
+    <!-- human-icon-wrapper: 이미지와 링크를 감싸는 부모 요소 -->
+    <div class="human-icon-wrapper">
+      <img class="human-icon" src="human-icon.png" alt="Human Icon">
+      <!-- 네모 창 추가 -->
+      <div class="human-icon-dropdown">
+        <a href="login.html" class="human-icon-button">로그인</a>
+        <a href="signup.html" class="human-icon-button">회원가입</a>
+      </div>
+    </div>
+</div>
+
+    
+    <div class="logo">
+        <a href="index.html">
+            <img src="team_logo.png" alt="logo">
+        </a>
+    </div>
+   
+    <!-- 로그인 폼 -->
+    <div class="login-form">
+        <form id="login-form" method="POST" action="/auth/login">
+            <div class="input-group">
+                <label for="email"></label>
+                <input type="email" id="email" name="email" placeholder="E-MAIL" required>
+            </div>
+            <div class="input-group">
+                <label for="password"></label>
+                <input type="password" id="password" name="password" placeholder="PW" required>
+            </div>
+            <div class="wrap-check-50">
+                <input type="checkbox" id="cbx-50">
+                <label for="cbx-50" class="check">
+                  <svg width="18px" height="18px" viewBox="0 0 18 18">
+                    <path d="M1,9 L1,3.5 C1,2 2,1 3.5,1 L14.5,1 C16,1 17,2 17,3.5 L17,14.5 C17,16 16,17 14.5,17 L3.5,17 C2,17 1,16 1,14.5 L1,9 Z"></path>
+                    <polyline points="1 9 7 14 15 4"></polyline>
+                  </svg>
+                </label>
+                <span class="checkbox-label">로그인 저장</span>
+            </div>
+            <div class="input-group">
+                <button type="submit" class="login-btn">로그인</button>
+            </div>
+
+        <!-- 소셜 로그인 버튼 -->
+        <div class="social-login-section">
+          <h2>소셜 로그인</h2>
+          <button id="kakao-login-btn">카카오 로그인</button>
+          <button id="google-login-btn">구글 로그인</button>
+          <button id="naver-login-btn">네이버 로그인</button>
+        </div>    
+
+        <!-- 추가된 링크들 -->
+        <div class="links">
+            <a href="find-username.html" class="link-button">아이디 찾기</a>
+            <a href="find-password.html" class="link-button">비밀번호 찾기</a>
+            <a href="signup.html" class="link-button">회원가입</a>
+        </div>
+      </form>
+    </div>
+
+    <script src="/component/login.js" defer></script>
+    <script src="/component/script.js" defer></script>
+</body>
+</html>

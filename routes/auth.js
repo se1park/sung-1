@@ -1,7 +1,6 @@
 const express = require('express');
-const passport = require('passport'); // passport 불러오기
-const { signup, login, findUsername, resetPasswordRequest, resetPassword } = require('../controllers/authController');
-const authController = require('../controllers/authController');
+const passport = require('passport');
+const { signup, login, findUsername, resetPasswordRequest, resetPassword, getCurrentUser } = require('../controllers/authController'); // getCurrentUser 가져오기
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
@@ -18,11 +17,14 @@ router.post('/signup', [
   }
   
   // signup 컨트롤러 호출
-  await authController.signup(req, res);
+  await signup(req, res);
 });
 
 // 로그인 처리
 router.post('/login', login);
+
+// 현재 사용자 정보 가져오기
+router.get('/user', getCurrentUser); // 수정된 부분
 
 // 카카오 로그인 라우트
 router.get('/kakao', passport.authenticate('kakao'));
@@ -54,7 +56,7 @@ router.get('/naver/callback', passport.authenticate('naver', {
 // 아이디 찾기 처리
 router.post('/find-username', (req, res) => {
   console.log('find-username route hit');
-  authController.findUsername(req, res);
+  findUsername(req, res);
 });
 
 // GET /signup 라우트 추가
@@ -63,9 +65,9 @@ router.get('/signup', (req, res) => {
 });
 
 // 비밀번호 재설정 요청 처리
-router.post('/reset-password-request', authController.resetPasswordRequest);
+router.post('/reset-password-request', resetPasswordRequest);
 
 // 비밀번호 재설정 처리
-router.post('/reset-password', authController.resetPassword);
+router.post('/reset-password', resetPassword);
 
 module.exports = router;

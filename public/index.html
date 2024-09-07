@@ -1,76 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup and Recommendation</title>
-    <link rel="stylesheet" href="./style/button.css"> <!-- CSS 파일 링크 -->
+    <title>BREAST BITES</title>
+    <link rel="stylesheet" href="App.css">
+    <link rel="stylesheet" href="button.css"> <!-- CSS 파일 링크 -->
 </head>
 <body>
-    <div id="signup-message"></div> <!-- 회원가입 메시지 출력 요소 -->
 
+  <div class="header">
+    <div class="wrap-input-18">
+      <div class="search">
+        <div>
+          <input type="text" placeholder="Search . . .">
+        </div>
+      </div>
+      <!-- username 환영 메시지를 출력할 영역 -->
+      <div id="welcome-message"></div>
+    </div>
 
-    <h1>Signup Form</h1>
-    <form id="signup-form" method="POST">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username" required><br><br>
+    <!-- human-icon-wrapper: 이미지와 링크를 감싸는 부모 요소 -->
+    <div class="human-icon-wrapper">
+      <img class="human-icon" src="human-icon.png" alt="Human Icon">
+      <!-- 네모 창 추가 -->
+      <div class="human-icon-dropdown">
+        <a href="login.html" class="human-icon-button">로그인</a>
+        <a href="signup.html" class="human-icon-button">회원가입</a>
+        <a href="mypage.html" class="human-icon-button">마이페이지</a>
+      </div>
+    </div>
+</div>
 
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
+    <div class="logo">
+      <a href="index.html">
+      <img src="team_logo.png" alt="logo">
+      </a>
+    </div>
 
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br><br>
+    <div class="container">
+        <div class="sidebar">
+            <a href="#">닭가슴살 기준</a>
+            <a href="#">맛</a>
+            <a href="#">그램</a>
+            <a href="#">브랜드</a>
+        </div>
 
-        <button type="submit">회원가입</button>
-    </form>
-
-    <!-- 아이디 찾기 폼 -->
-    <h2>아이디 찾기</h2>
-    <form id="find-username-form" method="POST">
-        <label for="find-email">이메일 입력:</label><br>
-        <input type="email" id="find-email" name="find-email" required><br><br>
-    
-        <button type="submit">아이디 찾기</button>
-    </form>
-    <div id="find-username-message"></div> <!-- 아이디 찾기 메시지 출력 요소 -->
-
-    <!-- 비밀번호 찾기 폼 -->
-    <h2>비밀번호 찾기</h2>
-    <form id="find-password-form" method="POST">
-        <label for="find-username">아이디 입력:</label><br>
-        <input type="text" id="find-username" name="find-username" required><br><br>
-
-        <label for="find-password-email">이메일 입력:</label><br>
-        <input type="email" id="find-password-email" name="find-password-email" required><br><br>
-
-        <button type="submit">비밀번호 찾기</button>
-    </form>
-    <div id="find-password-message"></div> <!-- 비밀번호 찾기 메시지 출력 요소 -->
-    
-    <hr>
-
-    <h2>닭가슴살 추천 받기</h2>
-    <div id="question-container" style="display: none;">
-        <p id="question"></p>
-        <div id="answer-container">
-            <input type="text" id="answer" placeholder="Your answer" style="display:none;"><br><br>
-            <button id="yes-btn" style="display:none;">Yes</button>
-            <button id="no-btn" style="display:none;">No</button>
-            <button id="submit-answer" style="display:none;">답변 제출</button>
+        <div class="content">
+            <div class="box">닭가슴살 사진</div>
         </div>
     </div>
 
-    <hr>
-    
-    <h2>추천 결과</h2>
-    <div id="recommendation-results">추천 결과가 없습니다.</div>
-
-    <hr>
-
-    <h2>소셜 로그인</h2>
-    <button id="kakao-login-btn">카카오 로그인</button>
-    <button id="google-login-btn">구글 로그인</button>
-    <button id="naver-login-btn">네이버 로그인</button>
-    <script src="/scripts.js" defer></script> <!-- JavaScript 파일 링크 -->
+      <!-- 닭가슴살 추천 받기 -->
+      <div class="recommendation-section">
+        <h2>닭가슴살 추천 받기</h2>
+        <div id="question-container" style="display: none;">
+            <p id="question"></p>
+            <div id="answer-container">
+                <input type="text" id="answer" placeholder="Your answer" style="display:none;"><br><br>
+                <button id="yes-btn" style="display:none;">Yes</button>
+                <button id="no-btn" style="display:none;">No</button>
+                <button id="submit-answer" style="display:none;">답변 제출</button>
+            </div>
+        </div>
+        <hr>
+        <h2>추천 결과</h2>
+        <div id="recommendation-results">추천 결과가 없습니다.</div>
+    </div>
+    <script src="/component/main.js"></script>
+    <script src="/component/scripts.js"></script> <!-- JavaScript 파일 링크 -->
 </body>
 </html>

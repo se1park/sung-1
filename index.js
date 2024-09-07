@@ -11,10 +11,13 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 // Passport 설정
-require('./config/passport')(passport); // passport 설정 불러오기
+require('./config/passport'); // passport 설정 불러오기
 
 // CORS 설정
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:8000',
+  credentials: true
+}));
 
 // 세션 설정
 app.use(session({
@@ -28,6 +31,8 @@ app.use(passport.session());
 
 // JSON 파싱
 app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
 
 // 라우터 가져오기
 const authRouter = require('./routes/auth');
