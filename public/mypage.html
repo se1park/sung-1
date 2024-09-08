@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BREAST BITES</title>
+    <link rel="stylesheet" href="App.css">
+    <link rel="stylesheet" href="button.css"> <!-- CSS 파일 링크 -->
+    <link rel="stylesheet" href="mypage.css">
+</head>
+<body>
+
+  <!-- 헤더 섹션 -->
+  <div class="header">
+    <div class="wrap-input-18">
+      <div class="search">
+        <div>
+          <input type="text" placeholder="Search . . .">
+        </div>
+      </div>
+      <!-- username 환영 메시지를 출력할 영역 -->
+      <div id="welcome-message"></div>
+    </div>
+
+    <!-- human-icon-wrapper: 이미지와 링크를 감싸는 부모 요소 -->
+    <div class="human-icon-wrapper">
+      <img class="human-icon" src="human-icon.png" alt="Human Icon">
+      <!-- 네모 창 추가 -->
+      <div class="human-icon-dropdown">
+        <a href="mypage.html" class="human-icon-button">마이페이지</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="logo">
+    <a href="index.html">
+      <img src="team_logo.png" alt="logo">
+    </a>
+  </div>
+
+   <!-- 내 정보 섹션 -->
+   <div class="info-section">
+    <h1>내 정보</h1>
+    <div id="user-info">
+      <p><strong>이메일:</strong> <span id="user-email"></span></p>
+      <p><strong>닉네임:</strong> <span id="user-nickname"></span></p>
+      <p><strong>비밀번호:</strong> <span id="user-password"></span> 
+        <button id="change-password-btn">비밀번호 변경</button>
+      </p>
+    </div>
+  </div>
+
+  <!-- 나의 닭가슴살 섹션 -->
+  <div class="chicken-section">
+    <h2>나의 닭가슴살</h2>
+    <button id="load-recommendations-btn">추천 목록 보기</button>
+    <ul id="my-chicken-list"></ul>
+      <!-- 사용자가 추천받은 닭가슴살 목록이 여기에 표시됨 -->
+  </div>
+
+  <h2>정보 수정</h2>
+    <form id="user-info-form">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br>
+
+        <label for="nickname">Nickname:</label>
+        <input type="text" id="nickname" name="nickname" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+
+        <button type="submit">정보 저장</button>
+    </form>
+
+  <script src="/component/mypage.js"></script>
+  <script src="/component/main.js"></script>
+  <script src="/component/scripts.js"></script> <!-- JavaScript 파일 링크 -->
+</body>
+</html>

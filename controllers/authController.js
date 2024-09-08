@@ -72,12 +72,15 @@ exports.login = (req, res, next) => {
 // 현재 로그인된 사용자 정보 반환
 exports.getCurrentUser = (req, res) => {
     if (req.isAuthenticated()) {
-        return res.json({ username: req.user.username });
+        return res.json({
+            email: req.user.email,
+            username: req.user.username,
+            chickens: req.user.recommendedChickens // 사용자에게 추천된 닭가슴살 목록
+        });
     } else {
         return res.status(401).json({ message: 'Unauthorized' });
     }
 };
-
 // 이메일로 사용자 이름 찾기
 exports.findUsername = async (req, res) => {
     const { email } = req.body;

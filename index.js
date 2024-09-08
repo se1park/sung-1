@@ -65,6 +65,36 @@ app.get('/dashboard', (req, res) => {
   }
 });
 
+// 로그인 상태 확인 API
+app.get('/api/check-login', (req, res) => {
+  if (req.isAuthenticated()) {
+    // 로그인된 사용자의 정보를 응답
+    res.json({ loggedIn: true, user: req.user });
+  } else {
+    // 로그인되지 않은 상태
+    res.json({ loggedIn: false });
+  }
+});
+
+// 사용자 닭가슴살 추천 리스트 API
+app.get('/api/my-chicken-list', (req, res) => {
+  if (req.isAuthenticated()) {
+    // 로그인된 사용자의 닭가슴살 추천 리스트를 가져옵니다.
+    // 이 부분에서 실제로 MongoDB나 다른 데이터베이스에서 데이터를 가져오도록 구현해야 합니다.
+    res.json({
+      success: true,
+      chickenList: [
+        // 예시 데이터
+        { name: '오리지널 닭가슴살', price: 12000 },
+        { name: '고추맛 닭가슴살', price: 14000 }
+      ]
+    });
+  } else {
+    res.status(401).json({ success: false, message: 'Unauthorized' });
+  }
+});
+
+
 // 추천 로직 엔드포인트
 app.use('/api/chicken-breast', chickenBreastRouter);
 
