@@ -1,11 +1,10 @@
-// 협업 기반
 const fs = require('fs');
 const mongoose = require('mongoose');
 const ChickenBreast = require('../models/ChickenBreast');
 const UserResponse = require('../models/UserResponse');
 const path = require('path');
 
-// 닭가슴살 데이터 JSON 파일 읽기
+// 닭가슴살 데이터 JSON 파일 경로 설정 및 파일 읽기
 const chickenBreastDataPath = path.join(__dirname, '../sources/ChickenBreast_data.json');
 const chickenBreastData = JSON.parse(fs.readFileSync(chickenBreastDataPath, 'utf-8'));
 
@@ -18,7 +17,7 @@ const questions = [
 
 // 질문 목록을 클라이언트에게 전달하는 함수
 const getQuestions = (req, res) => {
-    res.json(questions);
+    res.json(questions); // 질문 목록을 JSON 형태로 응답
 };
 
 // 사용자의 응답을 기반으로 쿼리를 수정하는 함수
@@ -36,7 +35,7 @@ const processAnswer = (questionIndex, answer, query) => {
             break;
         case 2: // 세 번째 질문: 최소 평점
             const minRating = parseFloat(answer);
-            if (!isNaN(minRating)) query.rating = { $gte: minRating }; // 최소 평점 설정
+            if (!isNaN(minRating)) query.rating = { $gte: minRating }; ;
             break;
         default:
             break;
@@ -81,44 +80,26 @@ const recommendChickenBreasts = async (req, res) => {
         const { answer, userId } = req.body;
         let { questionIndex = 0, query = {}, answers = [] } = req.session;
 
-        // 사용자가 답변을 했을 때 처리
+        // 사용자의 답변을 처리하고 세션에 저장
         if (answer !== undefined) {
             answers.push({ question: questions[questionIndex], answer });
             query = processAnswer(questionIndex, answer, query);
-
-            // 사용자 응답을 MongoDB에 저장
-            const userResponseData = {
-                userId: new mongoose.Types.ObjectId(userId),
-                answers,
-                productIds: [] // 추천된 제품 ID를 저장할 곳
-            };
-
-            try {
-                const newUserResponse = await UserResponse.create(userResponseData);
-                console.log(`Stored user response in MongoDB:`, newUserResponse);
-            } catch (dbError) {
-                console.error('MongoDB 저장에 실패했습니다:', dbError);
-                return res.status(500).json({ error: 'MongoDB 저장에 실패했습니다.' });
-            }
-
             questionIndex++;
             req.session.questionIndex = questionIndex;
             req.session.query = query;
             req.session.answers = answers;
         }
 
-        // 아직 모든 질문에 답하지 않은 경우 다음 질문을 전달
+        // 아직 모든 질문에 답변하지 않았다면, 다음 질문을 클라이언트에 전달
         if (questionIndex < questions.length) {
             res.json({ question: questions[questionIndex], answers });
         } else {
-            // 협업 필터링 로직 시작
-            
-            // 다른 사용자 응답을 가져와 유사도를 계산
+            // 모든 질문에 답변이 끝나면 다른 사용자의 응답을 찾아 유사도 계산
             const allUserResponses = await UserResponse.find({ userId: { $ne: userId } }).exec();
             let mostSimilarUser = null;
             let highestSimilarityScore = -1;
 
-            // 모든 사용자 응답과 비교하여 가장 유사한 사용자를 찾음
+            // 응답 유사도를 계산하여 가장 유사한 사용자를 찾음
             allUserResponses.forEach(userResponse => {
                 const similarityScore = calculateSimilarity(answers, userResponse.answers || []);
                 if (similarityScore > highestSimilarityScore) {
@@ -129,75 +110,79 @@ const recommendChickenBreasts = async (req, res) => {
 
             let recommendedProducts = [];
 
-            // 유사한 사용자가 있는 경우 그 사용자가 선호한 제품을 추천
+            // 유사한 사용자의 추천 제품 목록이 있으면 해당 제품을 추천
             if (mostSimilarUser && Array.isArray(mostSimilarUser.productIds)) {
-                const similarUserProducts = mostSimilarUser.productIds;
-
-                // 유사한 사용자가 선호한 제품을 필터링
                 recommendedProducts = chickenBreastData.filter(product => 
-                    similarUserProducts.includes(product._id.toString())
+                    mostSimilarUser.productIds.includes(product._id.toString())
                 );
             } else {
-                // 유사한 사용자가 없거나 유효한 productIds가 없는 경우
-                recommendedProducts = [];
-            }
-
-            // 유사한 사용자가 없거나 추천할 제품이 없으면 기본 필터링 방식으로 추천
-            if (recommendedProducts.length === 0) {
+                // 조건에 맞는 닭가슴살 제품 필터링
                 recommendedProducts = chickenBreastData.filter(product => {
                     let isValid = true;
-
-                    // 기본값 설정 및 검증
                     const productFlavors = Array.isArray(product.flavor) ? product.flavor : [];
-                    const queryFlavor = query.flavor || '';
-
-                    if (queryFlavor && productFlavors.includes(queryFlavor)) {
+                    if (query.flavor && productFlavors.includes(query.flavor)) {
                         isValid = false;
                     }
-
                     if (query.price) {
                         const { $gte, $lte } = query.price;
                         if (product.price < $gte || product.price > $lte) {
                             isValid = false;
                         }
                     }
-
                     if (query.rating && product.rating < query.rating.$gte) {
                         isValid = false;
                     }
-
                     return isValid;
                 });
             }
 
-            // 배열에서 무작위로 n개의 요소를 선택하는 함수
-            const getRandomItems = (array, n) => {
-                const shuffled = array.sort(() => 0.5 - Math.random());
-                return shuffled.slice(0, n);
-            };
-
-            // 최대 5개의 추천 제품을 무작위로 클린업하여 전달
+            // 추천된 제품 중 랜덤으로 5개 선택
+            const getRandomItems = (array, n) => array.sort(() => 0.5 - Math.random()).slice(0, n);
             const cleanedProducts = getRandomItems(recommendedProducts, 5).map(cleanData);
 
-            // 세션 초기화
+            // 추천된 제품의 ID를 저장
+            const productIds = cleanedProducts.map(product => product._id);
+            await UserResponse.updateOne(
+                { userId: new mongoose.Types.ObjectId(userId) },
+                { $set: { productIds } }
+            );
+
+            // 세션을 초기화
             req.session.questionIndex = 0;
             req.session.query = {};
             req.session.answers = [];
 
-            if (cleanedProducts.length > 0) {
-                res.json({
-                    message: '추천된 닭가슴살 제품입니다.',
-                    answers,
-                    products: cleanedProducts
-                });
-            } else {
-                res.json({ message: '조건에 맞는 추천 제품이 없습니다.', answers });
-            }
+            // 추천된 제품 목록을 클라이언트에 전달
+            res.json({
+                message: cleanedProducts.length > 0 ? '추천된 닭가슴살 제품입니다.' : '조건에 맞는 추천 제품이 없습니다.',
+                products: cleanedProducts
+            });
         }
     } catch (error) {
-        console.error('추천을 가져오는데 실패했습니다:', error);
         res.status(500).json({ error: '추천을 가져오는데 실패했습니다.' });
     }
 };
 
-module.exports = { getQuestions, recommendChickenBreasts };
+// 메인페이지에서 추천받은 닭가슴살 제품 조회 함수
+const getUserRecommendations = async (req, res) => {
+    try {
+        const { userId } = req.body;
+        const userResponse = await UserResponse.findOne({ userId: new mongoose.Types.ObjectId(userId) });
+
+        // 추천된 제품이 없을 경우 메시지 전송
+        if (!userResponse || !userResponse.productIds || userResponse.productIds.length === 0) {
+            return res.status(404).json({ message: '추천된 제품이 없습니다.' });
+        }
+
+        // 추천된 제품을 가져와 클라이언트에 전달
+        const recommendedProducts = chickenBreastData.filter(product =>
+            userResponse.productIds.includes(product._id.toString())
+        ).map(cleanData);
+
+        res.json({ products: recommendedProducts });
+    } catch (error) {
+        res.status(500).json({ error: '추천된 제품을 가져오는데 실패했습니다.' });
+    }
+};
+
+module.exports = { getQuestions, recommendChickenBreasts, getUserRecommendations };

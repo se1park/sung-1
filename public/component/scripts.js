@@ -168,6 +168,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         <img src="${product.image_url}" alt="${product.name}" width="100">
                     </li>
                 `).join('') + '</ul>';
+    
+                // 추천받은 제품을 서버에 저장
+                saveRecommendations(products);
+    
             } else {
                 resultsElement.innerText = '추천할 제품이 없습니다.';
             }
@@ -175,6 +179,18 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Recommendation results element not found.');
         }
     }
+    
+    // 추천받은 제품을 저장하는 함수
+    async function saveRecommendations(products) {
+        try {
+            const userId = '사용자_아이디_여기_삽입'; // 실제로 로그인한 사용자의 ID를 가져와야 함
+            await apiRequest('http://localhost:8000/api/save-recommendation', 'POST', { userId, products });
+            console.log('추천 제품이 저장되었습니다.');
+        } catch (error) {
+            console.error('추천 제품 저장 오류:', error);
+        }
+    }
+    
 
     function resetUI() {
         console.log('Resetting UI...');

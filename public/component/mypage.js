@@ -89,31 +89,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('닭가슴살 추천 응답:', response);
                 if (!response.ok) {
                     console.error('닭가슴살 추천 응답 오류:', response.statusText);
-                    return { success: false, chickenList: [] };
+                    return { success: false };
                 }
                 return response.json();
             })
             .then(data => {
-                console.log('닭가슴살 추천 데이터:', data);
-                const chickenList = document.getElementById('my-chicken-list');
-                if (data.success && data.chickenList && data.chickenList.length > 0) {
-                    // 추천 목록을 HTML 리스트로 표시
-                    chickenList.innerHTML = data.chickenList.map(chicken => `
-                        <li>
-                            <h3>${chicken.name}</h3>
-                            <p>Flavor: ${chicken.flavor || '정보 없음'}</p>
-                            <p>Price: ${chicken.price}</p>
-                            <p>Rating: ${chicken.rating || '정보 없음'}</p>
-                            <img src="${chicken.image}" alt="${chicken.name}" width="100">
-                        </li>
-                    `).join('');
+                console.log('추천된 닭가슴살 데이터:', data);
+                if (data.products && data.products.length > 0) {
+                    // 닭가슴살 목록을 표시할 요소
+                    const recommendationList = document.getElementById('recommendation-list');
+                    recommendationList.innerHTML = ''; // 기존 목록 초기화
+    
+                    // 추천된 각 제품을 목록에 추가
+                    data.products.forEach(product => {
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `
+                            <img src="${product.image_url || 'default-image.png'}" alt="${product.name}">
+                            <h3>${product.name}</h3>
+                            <p>맛: ${product.flavor}</p>
+                            <p>가격: ${product.price.toLocaleString()}원</p>
+                            <p>평점: ${product.rating}</p>
+                        `;
+                        recommendationList.appendChild(listItem);
+                    });
                 } else {
-                    // 추천받은 닭가슴살이 없는 경우 메시지 표시
-                    chickenList.innerHTML = '<p>추천받은 닭가슴살이 없습니다.</p>';
+                    alert('추천받은 닭가슴살 제품이 없습니다.');
                 }
             })
             .catch(err => {
-                console.error('닭가슴살 목록 가져오기 실패:', err);
+                console.error('닭가슴살 추천 가져오기 실패:', err);
+                alert('닭가슴살 추천을 가져오는 데 실패했습니다.');
             });
     });
 });

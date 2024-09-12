@@ -4,11 +4,43 @@ const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const secretText = 'superSecret';
 require('dotenv').config();
 
 // Express 앱 생성
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = 8000;
+app.listen(PORT, () =>  {
+  console.log('listening on port' + PORT);
+})
+
+// posts
+const posts = [
+  {
+    username: 'john',
+    title: 'Post 1'
+  },
+  {
+    username: 'Han',
+    title: 'Post 2'
+  }
+]
+app.get('/posts', (req, res) =>{
+  res.json(posts);
+})
+
+// login api
+app.post('/login', (req, res) => {
+  const username = req.body.username;
+  const user = {name: username};
+
+  // jwt를 이용해서 토큰 생성하기
+  const accessToken = jwt.sign(user, secretText);
+  res.json({accessToken: accessToken})
+})
+
+
 
 // Passport 설정
 require('./config/passport'); // passport 설정 불러오기
@@ -79,8 +111,6 @@ app.get('/api/check-login', (req, res) => {
 // 사용자 닭가슴살 추천 리스트 API
 app.get('/api/my-chicken-list', (req, res) => {
   if (req.isAuthenticated()) {
-    // 로그인된 사용자의 닭가슴살 추천 리스트를 가져옵니다.
-    // 이 부분에서 실제로 MongoDB나 다른 데이터베이스에서 데이터를 가져오도록 구현해야 합니다.
     res.json({
       success: true,
       chickenList: [
@@ -109,7 +139,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: 'Internal Server Error' });
 });
 
-// 서버 시작
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+// // 서버 시작
+// app.listen(PORT, () => {
+//   console.log(`Server is running on http://localhost:${PORT}`);
+// });
