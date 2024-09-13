@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('서버 오류가 발생했습니다. 나중에 다시 시도하세요.');
         }
     });
+
     // 팝업을 중앙에 열도록 수정
     const openCenteredPopup = (url, name) => {
         const width = 500;
@@ -74,5 +75,4 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('naver-login-btn').addEventListener('click', () => {
         openCenteredPopup('http://localhost:8000/auth/naver', 'naver-login');
     });
-    
 });

@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "parcel ./index.html",
+    "dev": "parcel ./public/index.html",
     "build": "parcel build ./index.html"
   },
   "keywords": [],

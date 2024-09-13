@@ -18,7 +18,7 @@ exports.signup = async (req, res) => {
     try {
         const existingUser = await User.findOne({ $or: [{ email }, { username }] });
         if (existingUser) {
-            return res.status(400).json({ message: 'Email or Username already exists' });
+            return res.status(400).json({ message: '이메일 또는 사용자 이름이 존재하지 않습니다.' });
         }
 
         const user = new User({
@@ -30,9 +30,9 @@ exports.signup = async (req, res) => {
 
         // 비밀번호 해싱
         await user.save();
-        res.status(201).json({ message: 'User created successfully' });
+        res.status(201).json({ message: '사용자가 성공적으로 생성되었습니다.' });
     } catch (err) {
-        res.status(500).json({ message: 'Server error', error: err.message });
+        res.status(500).json({ message: '서버 오류가 발생했습니다.', error: err.message });
     }
 };
 
@@ -40,22 +40,22 @@ exports.signup = async (req, res) => {
 exports.login = (req, res, next) => {
     passport.authenticate('local', async (err, user, info) => {
         if (err) {
-            console.error('Authentication error:', err);
+            console.error('인증 오류:', err);
             return next(err);
         }
         if (!user || !(await user.comparePassword(req.body.password))) {
-            return res.status(400).json({ message: 'Invalid credentials' });
+            return res.status(400).json({ message: '유효하지 않은 자격 증명입니다.' });
         }
 
         req.logIn(user, (err) => {
             if (err) {
-                console.error('Login error:', err);
+                console.error('로그인 오류:', err);
                 return next(err);
             }
-            console.log('User logged in:', user);
+            console.log('사용자 로그인됨:', user);
             req.session.user = user; 
             return res.json({ 
-                message: 'Logged in successfully',
+                message: '성공적으로 로그인 되었습니다.',
                 user: {
                     _id: user._id,
                     username: user.username,
@@ -78,7 +78,7 @@ exports.getCurrentUser = (req, res) => {
             chickens: req.user.recommendedChickens // 사용자에게 추천된 닭가슴살 목록
         });
     } else {
-        return res.status(401).json({ message: 'Unauthorized' });
+        return res.status(401).json({ message: '인증되지 않았습니다.' });
     }
 };
 // 이메일로 사용자 이름 찾기
@@ -88,13 +88,13 @@ exports.findUsername = async (req, res) => {
     try {
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(404).json({ message: 'No user found with this email' });
+            return res.status(404).json({ message: '이 이메일로 등록된 사용자가 없습니다.' });
         }
 
         res.status(200).json({ username: user.username });
     } catch (err) {
-        console.error('Error in findUsername:', err); // 에러 메시지 전체 출력
-        res.status(500).json({ message: 'Server error', error: err.message });
+        console.error('findUsername 오류:', err); // 에러 메시지 전체 출력
+        res.status(500).json({ message: '서버 오류가 발생했습니다.', error: err.message });
     }
 };
 
@@ -105,7 +105,7 @@ function getEmailConfig(index) {
     const emailPass = process.env[`EMAIL_PASS_${index}`];
 
     if (!emailService || !emailUser || !emailPass) {
-        throw new Error(`Email configuration for index ${index} is missing`);
+        throw new Error(`인덱스 ${index}에 대한 이메일 설정이 없습니다.`);
     }
 
     return { emailService, emailUser, emailPass };
@@ -118,7 +118,7 @@ exports.resetPasswordRequest = async (req, res) => {
     try {
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(404).json({ message: 'No user found with this email' });
+            return res.status(404).json({ message: '이 이메일로 등록된 사용자가 없습니다.' });
         }
 
         // 비밀번호 재설정 토큰 생성
@@ -138,17 +138,17 @@ exports.resetPasswordRequest = async (req, res) => {
         const mailOptions = {
             from: emailUser,
             to: email,
-            subject: 'Password Reset Request',
-            html: `<p>Click the link below to reset your password:</p>
+            subject: '비밀번호 재설정 요청',
+            html: `<p>아래 링크를 클릭하여 비밀번호를 재설정하세요:</p>
                    <a href="${resetLink}">${resetLink}</a>`
         };
 
         await transporter.sendMail(mailOptions);
 
-        res.status(200).json({ message: 'Password reset link has been sent to your email' });
+        res.status(200).json({ message: '비밀번호 재설정 링크가 이메일로 발송되었습니다.' });
     } catch (err) {
-        console.error('Error in resetPasswordRequest:', err); // 에러 메시지 전체 출력
-        res.status(500).json({ message: 'Server error', error: err.message });
+        console.error('resetPassWordRequest 오류:', err); // 에러 메시지 전체 출력
+        res.status(500).json({ message: '서버 오류가 발생했습니다.', error: err.message });
     }
 };
 
@@ -161,17 +161,17 @@ exports.resetPassword = async (req, res) => {
         const user = await User.findById(decoded.id);
 
         if (!user) {
-            return res.status(404).json({ message: 'Invalid or expired token' });
+            return res.status(404).json({ message: '유효하지 않거나 만료된 토큰입니다.' });
         }
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
-        console.log('Hashed password at signup:', hashedPassword);  // 해싱된 비밀번호 로그 출력
+        console.log('회원가입 시 해싱된 비밀번호:', hashedPassword);  // 해싱된 비밀번호 로그 출력
         user.password = hashedPassword;
         await user.save();
 
-        res.status(200).json({ message: 'Password has been reset successfully' });
+        res.status(200).json({ message: '비밀번호가 성공적으로 재설정되었습니다.' });
     } catch (err) {
-        console.error('Error in resetPassword:', err); // 에러 메시지 전체 출력
-        res.status(500).json({ message: 'Server error', error: err.message });
+        console.error('resetPassword 오류:', err); // 에러 메시지 전체 출력
+        res.status(500).json({ message: '서버 오류가 발생했습니다.', error: err.message });
     }
 };

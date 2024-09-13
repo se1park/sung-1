@@ -2,35 +2,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // 페이지가 로드된 후 로그인 상태를 확인하고 사용자 정보를 가져옴
     fetch('/api/check-login')
         .then(response => {
-            console.log('로그인 상태 응답:', response);
-            // 응답이 성공적이지 않으면 로그인 상태가 아님으로 간주
             if (!response.ok) {
-                console.error('로그인 상태 응답 오류:', response.statusText);
-                return { loggedIn: false }; // 로그인 상태 데이터 구조 수정
+                throw new Error('로그인 상태 응답 오류: ' + response.statusText);
             }
-            // JSON 형식으로 응답 데이터 반환
             return response.json();
         })
         .then(data => {
-            console.log('로그인 상태 데이터:', data);
             if (data.loggedIn) { // 사용자가 로그인되어 있으면
-                // 사용자 이메일, 닉네임, 해시된 비밀번호를 페이지에 표시
                 document.getElementById('user-email').textContent = data.user.email;
                 document.getElementById('user-nickname').textContent = data.user.username;
-                document.getElementById('user-password').textContent = '******'; // 해시된 비밀번호 표시
+                document.getElementById('user-password').textContent = '******'; // 비밀번호는 숨김 처리
             } else {
-                // 로그인이 필요한 경우 로그인 페이지로 리다이렉트
                 alert('로그인이 필요합니다.');
                 window.location.href = 'login.html';
             }
         })
         .catch(err => {
-            console.error('사용자 정보 가져오기 실패:', err);
+            console.error('로그인 상태 확인 실패:', err);
+            alert('로그인 상태를 확인하는 데 문제가 발생했습니다.');
         });
 
     // 비밀번호 변경 버튼 클릭 시 비밀번호 변경 페이지로 이동
     document.getElementById('change-password-btn').addEventListener('click', function() {
-        window.location.href = 'change-password.html'; // 비밀번호 변경 페이지로 이동
+        window.location.href = 'change-password.html';
     });
 
     // 사용자 정보 저장 폼의 제출을 처리
@@ -42,14 +36,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const nickname = document.getElementById('nickname').value;
         const password = document.getElementById('password').value;
 
-        console.log('사용자 입력값:', { email, nickname, password });
-
         // 서버로 전송할 데이터 객체를 준비
         const userInfo = {
             email: email,
-            nickname: nickname,
-            password: password
+            nickname: nickname
         };
+
+        // 비밀번호가 입력되었을 때만 추가
+        if (password) {
+            userInfo.password = password;
+        }
 
         // 사용자 정보를 서버에 저장하는 요청을 보냄
         fetch('/api/save-user-info', {
@@ -60,25 +56,21 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify(userInfo)
         })
         .then(response => {
-            console.log('사용자 정보 저장 응답:', response);
             if (!response.ok) {
-                console.error('사용자 정보 저장 응답 오류:', response.statusText);
-                return { success: false };
+                throw new Error('사용자 정보 저장 오류: ' + response.statusText);
             }
             return response.json();
         })
         .then(data => {
-            console.log('사용자 정보 저장 데이터:', data);
             if (data.success) {
-                // 저장 성공 시 사용자에게 알림
                 alert('사용자 정보가 저장되었습니다.');
             } else {
-                // 저장 실패 시 사용자에게 알림
                 alert('사용자 정보 저장에 실패했습니다.');
             }
         })
         .catch(err => {
             console.error('사용자 정보 저장 실패:', err);
+            alert('사용자 정보를 저장하는 데 문제가 발생했습니다.');
         });
     });
 
@@ -86,25 +78,21 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('load-recommendations-btn').addEventListener('click', function() {
         fetch('/api/my-chicken-list')
             .then(response => {
-                console.log('닭가슴살 추천 응답:', response);
                 if (!response.ok) {
-                    console.error('닭가슴살 추천 응답 오류:', response.statusText);
-                    return { success: false };
+                    throw new Error('닭가슴살 추천 응답 오류: ' + response.statusText);
                 }
                 return response.json();
             })
             .then(data => {
-                console.log('추천된 닭가슴살 데이터:', data);
                 if (data.products && data.products.length > 0) {
-                    // 닭가슴살 목록을 표시할 요소
                     const recommendationList = document.getElementById('recommendation-list');
                     recommendationList.innerHTML = ''; // 기존 목록 초기화
-    
+
                     // 추천된 각 제품을 목록에 추가
                     data.products.forEach(product => {
                         const listItem = document.createElement('li');
                         listItem.innerHTML = `
-                            <img src="${product.image_url || 'default-image.png'}" alt="${product.name}">
+                            <img src="${product.image_url || 'default-image.png'}" alt="${product.name}" width="100">
                             <h3>${product.name}</h3>
                             <p>맛: ${product.flavor}</p>
                             <p>가격: ${product.price.toLocaleString()}원</p>
@@ -118,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(err => {
                 console.error('닭가슴살 추천 가져오기 실패:', err);
-                alert('닭가슴살 추천을 가져오는 데 실패했습니다.');
+                alert('닭가슴살 추천을 가져오는 데 문제가 발생했습니다.');
             });
     });
 });

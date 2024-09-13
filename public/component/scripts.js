@@ -180,14 +180,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // 추천받은 제품을 저장하는 함수
-    async function saveRecommendations(products) {
+    async function saveRecommendations() {
         try {
-            const userId = '사용자_아이디_여기_삽입'; // 실제로 로그인한 사용자의 ID를 가져와야 함
-            await apiRequest('http://localhost:8000/api/save-recommendation', 'POST', { userId, products });
-            console.log('추천 제품이 저장되었습니다.');
+            const response = await fetch('http://localhost:8000/api/recommendations/save', {
+                method: 'POST', 
+                headers: { 'Content-Type': 'application/json' }, // 요청 헤더: JSON 형식
+                body: JSON.stringify({ /* 요청 데이터 */ }), // 요청 본문: JSON 데이터
+                credentials: 'include' 
+            });
+    
+            console.log('응답 상태 코드:', response.status);
+            console.log('응답 헤더:', response.headers);
+    
+            const text = await response.text();
+            console.log('응답 본문:', text);
+    
+            try {
+                const data = JSON.parse(text);
+                console.log('응답 데이터:', data);
+            } catch (e) {
+                console.error('응답을 JSON으로 파싱할 수 없습니다:', e.message);
+            }
         } catch (error) {
-            console.error('추천 제품 저장 오류:', error);
+            console.error('추천 제품 저장 오류:', error.message);
         }
     }
     

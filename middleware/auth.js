@@ -1,10 +1,14 @@
 const jwt = require('jsonwebtoken');
+const User = require("../models/User")
 require('dotenv').config(); // .env 파일의 환경 변수를 로드
 
-function auth(req, res, next) {
-  const token = req.header('x-auth-token');
+
+// 인증 미드웨어
+const protect = async (req, res, next) => {
+  let token
+
   if (!token) {
-    return res.status(401).json({ message: 'No token, authorization denied' });
+    return res.status(401).json({ message: '토큰이 없습니다. 인증이 거부되었습니다.' });
   }
 
   try {
