@@ -18,6 +18,7 @@
       </div>
       <!-- username 환영 메시지를 출력할 영역 -->
       <div id="welcome-message"></div>
+      <button id="logout-button" class="logout-button" style="display: none;">로그아웃</button>
     </div>
 
     <!-- human-icon-wrapper: 이미지와 링크를 감싸는 부모 요소 -->
@@ -38,19 +39,6 @@
       </a>
     </div>
 
-    <div class="container">
-        <div class="sidebar">
-            <a href="#">닭가슴살 기준</a>
-            <a href="#">맛</a>
-            <a href="#">그램</a>
-            <a href="#">브랜드</a>
-        </div>
-
-        <div class="content">
-            <div class="box">닭가슴살 사진</div>
-        </div>
-    </div>
-
       <!-- 닭가슴살 추천 받기 -->
       <div class="recommendation-section">
         <h2>닭가슴살 추천 받기</h2>
@@ -67,7 +55,7 @@
         <h2>추천 결과</h2>
         <div id="recommendation-results">추천 결과가 없습니다.</div>
     </div>
-    <script src="/component/main.js"></script>
-    <script src="/component/scripts.js"></script> <!-- JavaScript 파일 링크 -->
+    <script src="/component/main.js" defer></script>
+    <script src="/component/scripts.js" defer></script> <!-- JavaScript 파일 링크 -->
 </body>
 </html>

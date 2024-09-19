@@ -1,11 +1,9 @@
 const jwt = require('jsonwebtoken');
-const User = require("../models/User")
-require('dotenv').config(); // .env 파일의 환경 변수를 로드
+require('dotenv').config();
 
-
-// 인증 미드웨어
+// 인증 미들웨어
 const protect = async (req, res, next) => {
-  let token
+  const token = req.cookies.accessToken || req.headers['authorization']?.split(' ')[1];
 
   if (!token) {
     return res.status(401).json({ message: '토큰이 없습니다. 인증이 거부되었습니다.' });
@@ -13,11 +11,12 @@ const protect = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+    req.user = decoded; 
+
     next();
   } catch (err) {
-    res.status(400).json({ message: 'Token is not valid' });
+    res.status(400).json({ message: '유효하지 않은 토큰입니다.' });
   }
 }
 
-module.exports = auth;
+module.exports = protect;

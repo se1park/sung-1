@@ -42,7 +42,7 @@ router.post('/recommend', async (req, res) => {
 });
 
 // 추천받은 제품 저장
-router.post('/recommendations/save', async (req, res) => {
+router.post('/api/recommendations/save', async (req, res) => {
   const { userId, products } = req.body; // 사용자 ID와 추천받은 제품
   try {
       const user = await User.findById(userId);

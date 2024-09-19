@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const findUsernameForm = document.getElementById('find-username-form');
     const findPasswordForm = document.getElementById('find-password-form');
 
-    console.log('DOM fully loaded and parsed');
+    console.log('DOM이 완전히 로드되고 구문 분석되었습니다.');
 
     // 초기화
     let questions = [];
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // API 호출 함수
     async function apiRequest(url, method, body) {
-        console.log(`API Request: ${method} ${url}`, body);
+        console.log(`API 요청: ${method} ${url}`, body);
         try {
             const response = await fetch(url, {
                 method: method,
@@ -20,10 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const data = await response.json();
             if (response.ok) {
-                console.log('API Response:', data);
+                console.log('API 응답:', data);
                 return data;
             } else {
-                console.error('API Error Response:', data);
+                console.error('API 오류 응답:', data);
                 throw new Error(data.message || '서버 오류가 발생했습니다.');
             }
         } catch (error) {
@@ -41,18 +41,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            console.log('Signup Form Submitted:', { username, email, password });
+            console.log('회원가입 폼 제출됨:', { username, email, password });
 
             try {
                 await apiRequest('http://localhost:8000/auth/signup', 'POST', { username, email, password });
                 alert('회원가입이 성공적으로 완료되었습니다.');
-                window.location.href = 'http://localhost:8000/'; // 홈으로 리다이렉트
+                window.location.href = '/'; // 홈으로 리다이렉트
             } catch {
                 // 에러 메시지는 apiRequest에서 처리
             }
         });
     } else {
-        console.error('Signup form not found.');
+        console.error('회원가입 폼을 찾을 수 없습니다.');
     }
 
     // 아이디 찾기 폼 처리
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
             event.preventDefault();
             const email = document.getElementById('find-email').value;
 
-            console.log('Find Username Form Submitted:', { email });
+            console.log('아이디 찾기 폼 제출됨:', { email });
 
             try {
                 const data = await apiRequest('http://localhost:8000/auth/find-username', 'POST', { email });
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     } else {
-        console.error('Find Username form not found.');
+        console.error('아이디 찾기 폼을 찾을 수 없습니다.');
     }
 
     // 비밀번호 찾기 폼 처리
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const username = document.getElementById('find-username').value;
             const email = document.getElementById('find-password-email').value;
 
-            console.log('Find Password Form Submitted:', { username, email });
+            console.log('비밀번호 찾기 폼 제출됨:', { username, email });
 
             try {
                 await apiRequest('http://localhost:8000/auth/reset-password-request', 'POST', { username, email });
@@ -91,15 +91,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     } else {
-        console.error('Find Password form not found.');
+        console.error('비밀번호 찾기 폼을 찾을 수 없습니다.');
     }
 
     // 질문 목록을 가져오는 함수
     async function fetchQuestions() {
-        console.log('Fetching questions...');
+        console.log('질문을 가져오는 중...');
         try {
             questions = await apiRequest('http://localhost:8000/api/chicken-breast/questions', 'GET');
-            console.log('Questions fetched:', questions);
+            console.log('질문이 가져와졌습니다:', questions);
             if (questions.length > 0) {
                 displayQuestion(questions[currentQuestionIndex]);
                 document.getElementById('question-container').style.display = 'block';
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayQuestion(question) {
-        console.log('Displaying question:', question);
+        console.log('질문을 표시합니다:', question);
         const questionElement = document.getElementById('question');
         const answerInput = document.getElementById('answer');
         const yesBtn = document.getElementById('yes-btn');
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (questionElement) {
             questionElement.innerText = question;
         } else {
-            console.error('Question element not found.');
+            console.error('질문 요소를 찾을 수 없습니다.');
         }
 
         if (answerInput && yesBtn && noBtn && submitBtn && answerContainer) {
@@ -133,15 +133,15 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.style.display = currentQuestionIndex === 0 ? 'none' : 'inline-block';
             answerContainer.style.display = 'flex';
         } else {
-            console.error('Some elements for displaying the question are missing.');
+            console.error('질문을 표시하기 위한 일부 요소를 찾을 수 없습니다.');
         }
     }
 
     async function processAnswer(answer) {
-        console.log('Processing answer:', answer);
+        console.log('답변 처리 중:', answer);
         try {
             const data = await apiRequest('http://localhost:8000/api/chicken-breast/question', 'POST', { answer });
-            console.log('Answer processed, moving to next question:', data);
+            console.log('답변 처리 완료, 다음 질문으로 이동:', data);
             currentQuestionIndex++;
             if (currentQuestionIndex < questions.length) {
                 displayQuestion(questions[currentQuestionIndex]);
@@ -155,16 +155,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function displayRecommendations(products) {
-        console.log('Displaying recommendations:', products);
+        console.log('추천 제품을 표시합니다:', products);
         const resultsElement = document.getElementById('recommendation-results');
         if (resultsElement) {
             if (products.length > 0) {
                 resultsElement.innerHTML = '<ul>' + products.map(product => `
                     <li>
                         <h3>${product.name}</h3>
-                        <p>Flavor: ${product.flavor}</p>
-                        <p>Price: ${product.price}</p>
-                        <p>Rating: ${product.rating}</p>
+                        <p>맛: ${product.flavor}</p>
+                        <p>가격: ${product.price}</p>
+                        <p>평점: ${product.rating}</p>
                         <img src="${product.image_url}" alt="${product.name}" width="100">
                     </li>
                 `).join('') + '</ul>';
@@ -176,16 +176,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 resultsElement.innerText = '추천할 제품이 없습니다.';
             }
         } else {
-            console.error('Recommendation results element not found.');
+            console.error('추천 결과 요소를 찾을 수 없습니다.');
         }
     }
     
-    async function saveRecommendations() {
+    async function saveRecommendations(products) {
         try {
             const response = await fetch('http://localhost:8000/api/recommendations/save', {
                 method: 'POST', 
-                headers: { 'Content-Type': 'application/json' }, // 요청 헤더: JSON 형식
-                body: JSON.stringify({ /* 요청 데이터 */ }), // 요청 본문: JSON 데이터
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ products }), 
                 credentials: 'include' 
             });
     
@@ -206,9 +206,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-
     function resetUI() {
-        console.log('Resetting UI...');
+        console.log('UI를 초기화합니다...');
         document.getElementById('answer-container').style.display = 'none';
         document.getElementById('question-container').style.display = 'none';
     }
@@ -226,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'http://localhost:8000/auth/kakao';
         });
     } else {
-        console.error('Kakao login button not found.');
+        console.error('카카오 로그인 버튼을 찾을 수 없습니다.');
     }
 
     if (googleLoginBtn) {
@@ -234,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'http://localhost:8000/auth/google';
         });
     } else {
-        console.error('Google login button not found.');
+        console.error('구글 로그인 버튼을 찾을 수 없습니다.');
     }
 
     if (naverLoginBtn) {
@@ -242,7 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'http://localhost:8000/auth/naver';
         });
     } else {
-        console.error('Naver login button not found.');
+        console.error('네이버 로그인 버튼을 찾을 수 없습니다.');
     }
 
     document.getElementById('submit-answer').addEventListener('click', async () => {

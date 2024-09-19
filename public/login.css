@@ -211,3 +211,17 @@ body, html {
     text-decoration: underline;
   }
   
+
+  #logout-button {
+    margin-left: 10px; /* welcome-message 옆에 여백을 추가 */
+    padding: 5px 10px;
+    background-color: #f00;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  #logout-button:hover {
+    background-color: #c00;
+  }
