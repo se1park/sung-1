@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // 페이지가 로드된 후 로그인 상태를 확인하고 사용자 정보를 가져옴
-    fetch('/api/check-login')
+    fetch('/auth/user')
         .then(response => {
             if (!response.ok) {
                 throw new Error('로그인 상태 응답 오류: ' + response.statusText);
@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
+            console.log(data); // 응답 데이터 전체를 출력
+
             if (data.loggedIn) { // 사용자가 로그인되어 있으면
                 document.getElementById('user-email').textContent = data.user.email;
                 document.getElementById('user-nickname').textContent = data.user.username;

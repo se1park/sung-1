@@ -3,7 +3,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-const generateToken = require('../utils/generateToken')
+const generateToken = require('../utils/generateToken');
 const { validationResult } = require('express-validator');
 require('dotenv').config();
 
@@ -40,7 +40,7 @@ exports.signup = async (req, res) => {
     }
 };
 
-// 사용자 로그인 처리
+// 로컬 로그인 처리
 exports.login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -58,15 +58,17 @@ exports.login = async (req, res) => {
 
         // JWT 토큰 생성
         const token = generateToken(user._id);
+        console.log('생성된 토큰:', token);
 
+        // 로컬 로그인을 위한 응답 (JWT를 반환)
         res.json({
             message: '성공적으로 로그인 되었습니다.',
             user: {
                 _id: user._id,
                 username: user.username,
-                email: user.email
+                email: user.email,
+                token
             },
-            token
         });
 
     } catch (err) {
@@ -75,17 +77,34 @@ exports.login = async (req, res) => {
     }
 };
 
-// 현재 로그인된 사용자 정보 반환
+// 현재 로그인된 사용자 정보 반환 (로컬 및 소셜 로그인 구분)
 exports.checkLoginStatus = (req, res) => {
-    if (req.user) {
+    // 소셜 로그인 시 Passport 세션을 통해 인증된 사용자 정보 반환
+    if (req.isAuthenticated()) {
         return res.json({
-            email: req.user.email,
+            loggedIn: true,
             username: req.user.username,
-            // chickens: req.user.recommendedChickens // 사용자에게 추천된 닭가슴살 목록
+            email: req.user.email
         });
-    } else {
-        return res.status(401).json({ message: '인증되지 않았습니다.' });
     }
+
+     // 로컬 로그인 시 JWT 토큰 검증
+    const token = req.headers['authorization']?.split(' ')[1];
+    if (token) {
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            return res.json({
+                loggedIn: true,
+                email: decoded.email,
+                username: decoded.username
+            });
+        } catch (error) {
+            console.error('토큰 검증 오류:', error.message);
+            return res.status(401).json({ message: '유효하지 않은 토큰입니다.' });
+        }
+    }
+ 
+    return res.status(401).json({ message: '로그인되어 있지 않습니다.' });
 };
 
 // 이메일로 사용자 이름 찾기

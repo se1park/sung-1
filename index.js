@@ -1,12 +1,18 @@
-const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const express = require('express');
 const app = express();
-require('dotenv').config();
+const dotenv = require('dotenv');
+
+// 환경 변수 초기화
+dotenv.config(); 
+
+// JWT_SECRET 확인
+console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
 // Express 앱 생성
 const PORT = 8000;
@@ -65,7 +71,7 @@ app.get('/dashboard', (req, res) => {
 });
 
 // 로그인 상태 확인 API
-app.get('/api/check-login', (req, res) => {
+app.get('/auth/user', (req, res) => {
   if (req.isAuthenticated()) {
     // 로그인된 사용자의 정보를 응답
     res.json({ loggedIn: true, user: req.user });
@@ -74,6 +80,7 @@ app.get('/api/check-login', (req, res) => {
     res.json({ loggedIn: false });
   }
 });
+
 
 // 사용자 닭가슴살 추천 리스트 API
 app.get('/api/my-chicken-list', (req, res) => {

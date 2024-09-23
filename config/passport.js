@@ -12,11 +12,11 @@ passport.use(new LocalStrategy(
   async (email, password, done) => {
     try {
       const user = await User.findOne({ email });
-      if (!user) return done(null, false, { message: 'No user with that email' });
+      if (!user) return done(null, false, { message: '이메일이 존재하지 않습니다.' });
 
       // 비밀번호 비교
       const isMatch = await user.comparePassword(password);
-      if (!isMatch) return done(null, false, { message: 'Incorrect password' });
+      if (!isMatch) return done(null, false, { message: '비밀번호가 정확하지 않습니다.' });
 
       return done(null, user);
     } catch (err) {

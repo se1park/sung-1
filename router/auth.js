@@ -1,7 +1,6 @@
 const express = require('express');
 const passport = require('passport');
 const authController = require('../controllers/authController');
-const User = require('../models/User'); // 사용자 모델
 const protect = require('../middleware/auth');
 const { body } = require('express-validator');
 const router = express.Router();
@@ -21,13 +20,13 @@ router.post('/login', authController.login);
 router.get('/user', protect, authController.checkLoginStatus); 
 
 // 이메일로 사용자 이름 찾기
-router.post('/find-username', authController.findUsername);
+router.post('/find-username', protect, authController.findUsername);
 
 // 비밀번호 재설정 요청
-router.post('/reset-password-request', authController.resetPasswordRequest);
+router.post('/reset-password-request', protect, authController.resetPasswordRequest);
 
 // 비밀번호 재설정 처리
-router.post('/reset-password', authController.resetPassword);
+router.post('/reset-password', protect, authController.resetPassword);
 
 
 // 카카오 로그인 라우트
